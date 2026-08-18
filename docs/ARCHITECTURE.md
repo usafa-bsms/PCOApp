@@ -36,7 +36,19 @@ schedule_runs + schedule_assignments  →  written to Supabase, read by faculty
 1. No randomness (no `Math.random`/shuffle). Any nondeterminism is a bug.
 2. Iterate periods, persons, courses in canonical sorted order — never rely on DB/insertion order.
 3. Pure functions only in `src/scheduler/`: take typed input, return a result and a score. No I/O, no network.
-4. Search is a weighted best-first / constraint relaxation over candidate assignments; ties broken deterministically.
+4. Tie-breaks are by target-slack → fewest sections → preference → alphabetical. Start-period offset per course derives from a stable index.
+5. `solve()` = `solveCore` (greedy; person-period + room-count capacity) → `assignRooms` (deferred room fill). A search-based solver can replace `solveCore` behind the same `SolveResult` interface later.
+
+## Directive from scheduling guidance (Inputs/*.pdf)
+Soft targets that should reduce to penalty-weighted constraints (several not yet
+wired in — see outstanding.md Q6/Q7):
+- All 12 times used; don't concentrate in a few periods.
+- 10+ sections ⇒ ≥6 times, M/T-split with more mornings, include M1+T1; M1/M2/T1/T2 ≥ others; ≥25% of sections in 5th/6th.
+- Spread a course's sections M/T and through the day unless one instructor.
+- Single-period course ≥250 enrollment ⇒ all 12 times.
+- Double-period courses start only at 1st/3rd/5th.
+- Avoid single-offering at slots 1/5/6 (encoded: `single_offering_peak`).
+- Two-section course: no back-to-back within one double block (encoded: `two_section_same_block`).
 
 ## Directory layout
 ```
@@ -47,23 +59,28 @@ src/
   hooks/useRbac.ts
   lib/
     rbac.ts              # role checks + labels
-    periods.ts           # canonical M1..T6 metadata
+    periods.ts           # canonical M1..T6, lunch-aware adjacency
     supabase-tables.ts   # typed row accessors (reads)
     api.ts               # mutations guarded by role
   scheduler/
     types.ts             # input/output/solution types
     normalize.ts         # canonical ordering of inputs
     constraints.ts       # penalty evaluations
-    solver.ts            # deterministic search
+    solver.ts            # solveCore (greedy) + solve (core + rooms)
+    rooms.ts             # deferred room-filling pass
     score.ts
     index.ts             # run(input) => { solution, score, violates }
-    __tests__/solver.test.ts
+    __tests__/
+      solver.test.ts
+      fixture.test.ts    # runs on real fall2026 fixture
+      fixtures/fall2026.json  # 16 courses/116 sections/41 instructors/15 rooms
   pages/
     LoginPage.tsx
     (Roster, Courses, Qualifications, Preferences,
      Locks, Constraints, Schedule) Page.tsx
   components/
   routes.tsx / App.tsx
+temp/                     # local scratch (gitignored); parse_pco.py regenerates the fixture
 ```
 
 ## Database schema (tables)
@@ -76,7 +93,7 @@ All input/result tables carry `semester_id` (PCO is per-semester).
 - `classrooms` — id, semester_id, name, capacity (int; a room characteristic, currently up to 23). Seating target ≈ 110% of expected enrollment by sizing sections.
 - `preferences` — id, person_id, semester_id, kind (enum `course|period`), course_id (nullable), period_id (nullable), rank (int; lower = stronger), is_hard_exclusion (bool). Faculty "want to teach X / teach during Y"; hard exclusions = hard.
 - `locks` — id, semester_id, course_id, section (nullable), person_id (nullable), period_id (nullable), room_id (nullable), lock_type (enum `course_director | assignment`), note. HARD — any subset of course→section→period→room→instructor.
-- `constraints` — id, semester_id, name, type (enum: `spread_sections | morning_min | afternoon_min | balance_mt | consecutive_periods | single_day | no_forced_break`), penalty (int), params (jsonb).
+- `constraints` — id, semester_id, name, type (enum: `spread_sections | morning_min | afternoon_min | balance_mt | consecutive_periods | single_day | no_forced_break | single_offering_peak | two_section_same_block`), penalty (int), params (jsonb).
 - `schedule_runs` — id, semester_id, created_by, created_at, status (enum `running|done|failed`), solution_hash (for reproducibility), score (int).
 - `schedule_assignments` — id, run_id, person_id, course_id, section (int), period_id, room_id (nullable), role (enum `director|teacher`).
 
@@ -90,11 +107,16 @@ All input/result tables carry `semester_id` (PCO is per-semester).
 - Use RLS policies keyed on the current user's `persons.role`. App-role checks in `lib/rbac.ts` are UX only.
 
 ## Output / export
-The PCO report must be downloadable in several formats (offline save + historical view). A flexible output module will render the schedule to CSV/PDF/Excel/JSON. (Formats pending — see `outstanding.md` Q3.)
+The PCO report must be downloadable in several formats (offline save + historical view). Primary views:
+1. Sections by **course** (each course → its periods/instructors/rooms).
+2. Sections by **teacher** (each instructor → their periods/courses/rooms).
+3. The special **PCO xlsx** layout (`Inputs/DFMS_PCO_F26_V7.xlsx`).
+(Not yet implemented — see `outstanding.md` Q3.)
 
 ## Roadmap
-1. Scaffold + auth (this step).
-2. Seed input tables + CRUD pages for inputs.
-3. Solver (deterministic) + unit tests.
-4. Run/visualize schedule; persist results; faculty view; export module.
-5. Iterate on constraint set with real sample inputs (CSV → Test semester).
+1. Scaffold + auth — DONE.
+2. Greedy-valid deterministic solver + real Fall 2026 fixture — DONE (16 courses/116 sections placed, rooms filled, no double-booking).
+3. Seed input tables + CRUD pages for inputs (roster, courses, quals, preferences, locks, constraints).
+4. Search-based solver to optimize soft guidance targets (penalty minimization), replacing `solveCore`.
+5. Run/visualize schedule; persist results; faculty view; multi-format export module.
+6. Encode remaining guidance rules (double-period, ≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density).

@@ -1,0 +1,4320 @@
+{
+  "semester": "Fall 2026",
+  "courses": [
+    {
+      "id": "c00",
+      "code": "Data Sci 220",
+      "sections": 29,
+      "caps": [
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21
+      ],
+      "expectedEnrollment": 554
+    },
+    {
+      "id": "c01",
+      "code": "Data Sci 421",
+      "sections": 1,
+      "caps": [
+        50
+      ],
+      "expectedEnrollment": 45
+    },
+    {
+      "id": "c02",
+      "code": "Math 141",
+      "sections": 34,
+      "caps": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "expectedEnrollment": 711
+    },
+    {
+      "id": "c03",
+      "code": "Math 142",
+      "sections": 1,
+      "caps": [
+        15
+      ],
+      "expectedEnrollment": 14
+    },
+    {
+      "id": "c04",
+      "code": "Math 152",
+      "sections": 15,
+      "caps": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "expectedEnrollment": 314
+    },
+    {
+      "id": "c05",
+      "code": "Math 243",
+      "sections": 11,
+      "caps": [
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22
+      ],
+      "expectedEnrollment": 220
+    },
+    {
+      "id": "c06",
+      "code": "Math 245",
+      "sections": 6,
+      "caps": [
+        22,
+        22,
+        22,
+        22,
+        22,
+        22
+      ],
+      "expectedEnrollment": 120
+    },
+    {
+      "id": "c07",
+      "code": "Math 253",
+      "sections": 6,
+      "caps": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "expectedEnrollment": 125
+    },
+    {
+      "id": "c08",
+      "code": "Math 320",
+      "sections": 1,
+      "caps": [
+        14
+      ],
+      "expectedEnrollment": 13
+    },
+    {
+      "id": "c09",
+      "code": "Math 342",
+      "sections": 2,
+      "caps": [
+        12,
+        18
+      ],
+      "expectedEnrollment": 27
+    },
+    {
+      "id": "c10",
+      "code": "Math 346",
+      "sections": 3,
+      "caps": [
+        18,
+        18,
+        18
+      ],
+      "expectedEnrollment": 49
+    },
+    {
+      "id": "c11",
+      "code": "Math 366",
+      "sections": 2,
+      "caps": [
+        10,
+        10
+      ],
+      "expectedEnrollment": 18
+    },
+    {
+      "id": "c12",
+      "code": "Math 420",
+      "sections": 1,
+      "caps": [
+        10
+      ],
+      "expectedEnrollment": 9
+    },
+    {
+      "id": "c13",
+      "code": "Math 468",
+      "sections": 1,
+      "caps": [
+        16
+      ],
+      "expectedEnrollment": 15
+    },
+    {
+      "id": "c14",
+      "code": "OpsRsch 305",
+      "sections": 1,
+      "caps": [
+        50
+      ],
+      "expectedEnrollment": 45
+    },
+    {
+      "id": "c15",
+      "code": "OpsRsch 311",
+      "sections": 2,
+      "caps": [
+        17,
+        17
+      ],
+      "expectedEnrollment": 31
+    }
+  ],
+  "persons": [
+    {
+      "id": "p00",
+      "name": "Adorno, William",
+      "role": "faculty",
+      "courseLoad": 1
+    },
+    {
+      "id": "p01",
+      "name": "Anderson, Nicholas",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p02",
+      "name": "Boardman, Brian",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p03",
+      "name": "Bradshaw, Amelia",
+      "role": "faculty",
+      "courseLoad": 1
+    },
+    {
+      "id": "p04",
+      "name": "Butler, Harris",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p05",
+      "name": "Call, Robert",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p06",
+      "name": "Cho, Philip",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p07",
+      "name": "Coonradt, Wesley",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p08",
+      "name": "Davis, Evelyn",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p09",
+      "name": "Eichholz, Joseph",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p10",
+      "name": "Ferguson, Leann",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p11",
+      "name": "Franzen, Courtney",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p12",
+      "name": "Hallare, Maila",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p13",
+      "name": "Hastings, Eric",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p14",
+      "name": "Hauschild-Eastman, Jessica",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p15",
+      "name": "Hitt, Brianna",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p16",
+      "name": "Holaway, Calli",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p17",
+      "name": "Knight, Emily",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p18",
+      "name": "Leonard, Taylor",
+      "role": "faculty",
+      "courseLoad": 1
+    },
+    {
+      "id": "p19",
+      "name": "Logan, Austin",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p20",
+      "name": "Louma, Alyssa",
+      "role": "faculty",
+      "courseLoad": 1
+    },
+    {
+      "id": "p21",
+      "name": "McMahan, Cameron",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p22",
+      "name": "Muniz, Megan",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p23",
+      "name": "Nelson, Aaron",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p24",
+      "name": "Newton, Robert",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p25",
+      "name": "Palmer, Everett",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p26",
+      "name": "Pierce, Ian",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p27",
+      "name": "Rosenthal, McKenzie",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p28",
+      "name": "Salter, Travis",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p29",
+      "name": "Schaubroeck, Lisbeth",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p30",
+      "name": "Schwalbe, Sophia",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p31",
+      "name": "Seiders, Matthew",
+      "role": "faculty",
+      "courseLoad": 2
+    },
+    {
+      "id": "p32",
+      "name": "Shisler, Matthew",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p33",
+      "name": "Stanhope, Shelby",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p34",
+      "name": "Swanson, Andrew",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p35",
+      "name": "Treat, Kevin",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p36",
+      "name": "Warnke, Isaiah",
+      "role": "faculty",
+      "courseLoad": 4
+    },
+    {
+      "id": "p37",
+      "name": "Wilbourn, Akhenaton",
+      "role": "faculty",
+      "courseLoad": 5
+    },
+    {
+      "id": "p38",
+      "name": "Williams, Scott",
+      "role": "faculty",
+      "courseLoad": 1
+    },
+    {
+      "id": "p39",
+      "name": "Woodrum, Shelby",
+      "role": "faculty",
+      "courseLoad": 3
+    },
+    {
+      "id": "p40",
+      "name": "Yates, Don",
+      "role": "faculty",
+      "courseLoad": 4
+    }
+  ],
+  "rooms": [
+    "5D10",
+    "5D14",
+    "5F2",
+    "5D20",
+    "5D2",
+    "5D4",
+    "5F4",
+    "5D12",
+    "5D8",
+    "5D22",
+    "5F10",
+    "5F6",
+    "5F8",
+    "5D54",
+    "5D6"
+  ],
+  "periods": [
+    {
+      "code": "M1",
+      "day": "M",
+      "slot": 1,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "M2",
+      "day": "M",
+      "slot": 2,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "M3",
+      "day": "M",
+      "slot": 3,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "M4",
+      "day": "M",
+      "slot": 4,
+      "partOfDay": "afternoon"
+    },
+    {
+      "code": "M5",
+      "day": "M",
+      "slot": 5,
+      "partOfDay": "afternoon"
+    },
+    {
+      "code": "M6",
+      "day": "M",
+      "slot": 6,
+      "partOfDay": "afternoon"
+    },
+    {
+      "code": "T1",
+      "day": "T",
+      "slot": 1,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "T2",
+      "day": "T",
+      "slot": 2,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "T3",
+      "day": "T",
+      "slot": 3,
+      "partOfDay": "morning"
+    },
+    {
+      "code": "T4",
+      "day": "T",
+      "slot": 4,
+      "partOfDay": "afternoon"
+    },
+    {
+      "code": "T5",
+      "day": "T",
+      "slot": 5,
+      "partOfDay": "afternoon"
+    },
+    {
+      "code": "T6",
+      "day": "T",
+      "slot": 6,
+      "partOfDay": "afternoon"
+    }
+  ],
+  "qualifications": [
+    {
+      "personId": "p00",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p00",
+      "courseId": "c01",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p01",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p01",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p02",
+      "courseId": "c03",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p03",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p04",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p05",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p06",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p07",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p07",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p08",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p08",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c12",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p09",
+      "courseId": "c15",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p10",
+      "courseId": "c08",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p11",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p12",
+      "courseId": "c10",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p13",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p14",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p15",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p16",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p17",
+      "courseId": "c11",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p18",
+      "courseId": "c14",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p19",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p20",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p21",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p22",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p23",
+      "courseId": "c09",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p24",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p25",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p26",
+      "courseId": "c05",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p27",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p27",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p28",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p28",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p29",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p30",
+      "courseId": "c13",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p31",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p32",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p33",
+      "courseId": "c07",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p34",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p34",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p35",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p36",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p36",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p36",
+      "courseId": "c00",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p37",
+      "courseId": "c04",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p38",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c06",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c05",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c01",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c07",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c03",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c04",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c09",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c10",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c12",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c14",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c15",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c08",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c13",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c11",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p39",
+      "courseId": "c06",
+      "level": "can_direct"
+    },
+    {
+      "personId": "p40",
+      "courseId": "c02",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p40",
+      "courseId": "c00",
+      "level": "can_teach"
+    },
+    {
+      "personId": "p40",
+      "courseId": "c02",
+      "level": "can_direct"
+    }
+  ],
+  "groundTruth": [
+    {
+      "courseId": "c02",
+      "period": "T1",
+      "sectionLetter": "B",
+      "room": "5D10",
+      "personId": "p08",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T2",
+      "sectionLetter": "B",
+      "room": "5D10",
+      "personId": "p08",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T3",
+      "sectionLetter": "B",
+      "room": "5D10",
+      "personId": "p08",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T4",
+      "sectionLetter": "B",
+      "room": "5D10",
+      "personId": "p08",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T3",
+      "sectionLetter": "D",
+      "room": "5D14",
+      "personId": "p27",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T4",
+      "sectionLetter": "D",
+      "room": "5D14",
+      "personId": "p27",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T5",
+      "sectionLetter": "C",
+      "room": "5D14",
+      "personId": "p27",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T6",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p27",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T4",
+      "sectionLetter": "C",
+      "room": "5F2",
+      "personId": "p40",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T5",
+      "sectionLetter": "B",
+      "room": "5F2",
+      "personId": "p40",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T1",
+      "sectionLetter": "D",
+      "room": "5F2",
+      "personId": "p40",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T2",
+      "sectionLetter": "D",
+      "room": "5F2",
+      "personId": "p40",
+      "cap": 23
+    },
+    {
+      "courseId": "c01",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5D20",
+      "personId": "p00",
+      "cap": 50
+    },
+    {
+      "courseId": "c02",
+      "period": "T1",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p01",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p01",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p01",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T4",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p01",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M3",
+      "sectionLetter": "C",
+      "room": "5D4",
+      "personId": "p02",
+      "cap": 23
+    },
+    {
+      "courseId": "c03",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p02",
+      "cap": 15
+    },
+    {
+      "courseId": "c02",
+      "period": "M1",
+      "sectionLetter": "B",
+      "room": "5D4",
+      "personId": "p03",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T1",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p04",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p04",
+      "cap": 23
+    },
+    {
+      "courseId": "c05",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p05",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "T1",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p05",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p05",
+      "cap": 22
+    },
+    {
+      "courseId": "c00",
+      "period": "T4",
+      "sectionLetter": "A",
+      "room": "5D12",
+      "personId": "p06",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5D12",
+      "personId": "p06",
+      "cap": 21
+    },
+    {
+      "courseId": "c02",
+      "period": "T1",
+      "sectionLetter": "C",
+      "room": "5D8",
+      "personId": "p07",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T2",
+      "sectionLetter": "C",
+      "room": "5D8",
+      "personId": "p07",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T3",
+      "sectionLetter": "C",
+      "room": "5D8",
+      "personId": "p07",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5D10",
+      "personId": "p07",
+      "cap": 23
+    },
+    {
+      "courseId": "c15",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D22",
+      "personId": "p09",
+      "cap": 17
+    },
+    {
+      "courseId": "c15",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5D22",
+      "personId": "p09",
+      "cap": 17
+    },
+    {
+      "courseId": "c12",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "NONE",
+      "personId": "p09",
+      "cap": 10
+    },
+    {
+      "courseId": "c07",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p10",
+      "cap": 23
+    },
+    {
+      "courseId": "c07",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p10",
+      "cap": 23
+    },
+    {
+      "courseId": "c08",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p10",
+      "cap": 14
+    },
+    {
+      "courseId": "c05",
+      "period": "M1",
+      "sectionLetter": "A",
+      "room": "5D12",
+      "personId": "p11",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D12",
+      "personId": "p11",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5D12",
+      "personId": "p11",
+      "cap": 22
+    },
+    {
+      "courseId": "c10",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5F6",
+      "personId": "p12",
+      "cap": 18
+    },
+    {
+      "courseId": "c10",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5F6",
+      "personId": "p12",
+      "cap": 18
+    },
+    {
+      "courseId": "c10",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5F6",
+      "personId": "p12",
+      "cap": 18
+    },
+    {
+      "courseId": "c02",
+      "period": "M1",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p13",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p13",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p13",
+      "cap": 23
+    },
+    {
+      "courseId": "c00",
+      "period": "M1",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p14",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p14",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p14",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M1",
+      "sectionLetter": "B",
+      "room": "5D20",
+      "personId": "p15",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M2",
+      "sectionLetter": "B",
+      "room": "5D20",
+      "personId": "p15",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T1",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p16",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p16",
+      "cap": 21
+    },
+    {
+      "courseId": "c06",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5F8",
+      "personId": "p17",
+      "cap": 22
+    },
+    {
+      "courseId": "c11",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5F8",
+      "personId": "p17",
+      "cap": 10
+    },
+    {
+      "courseId": "c11",
+      "period": "T4",
+      "sectionLetter": "A",
+      "room": "5F8",
+      "personId": "p17",
+      "cap": 10
+    },
+    {
+      "courseId": "c14",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "NONE",
+      "personId": "p18",
+      "cap": 50
+    },
+    {
+      "courseId": "c02",
+      "period": "M4",
+      "sectionLetter": "B",
+      "room": "5D4",
+      "personId": "p19",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p19",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M6",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p19",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M6",
+      "sectionLetter": "C",
+      "room": "5D10",
+      "personId": "p20",
+      "cap": 23
+    },
+    {
+      "courseId": "c07",
+      "period": "M1",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p21",
+      "cap": 23
+    },
+    {
+      "courseId": "c07",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p21",
+      "cap": 23
+    },
+    {
+      "courseId": "c00",
+      "period": "T1",
+      "sectionLetter": "B",
+      "room": "5D22",
+      "personId": "p22",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T2",
+      "sectionLetter": "B",
+      "room": "5D22",
+      "personId": "p22",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5D22",
+      "personId": "p22",
+      "cap": 21
+    },
+    {
+      "courseId": "c06",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5D4",
+      "personId": "p23",
+      "cap": 22
+    },
+    {
+      "courseId": "c09",
+      "period": "T1",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p23",
+      "cap": 12
+    },
+    {
+      "courseId": "c09",
+      "period": "T2",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p23",
+      "cap": 18
+    },
+    {
+      "courseId": "c00",
+      "period": "M3",
+      "sectionLetter": "B",
+      "room": "5D8",
+      "personId": "p24",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p24",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M6",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p24",
+      "cap": 21
+    },
+    {
+      "courseId": "c02",
+      "period": "M2",
+      "sectionLetter": "B",
+      "room": "5F4",
+      "personId": "p25",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M3",
+      "sectionLetter": "B",
+      "room": "5F4",
+      "personId": "p25",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p25",
+      "cap": 23
+    },
+    {
+      "courseId": "c05",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p26",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p26",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "M6",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p26",
+      "cap": 22
+    },
+    {
+      "courseId": "c04",
+      "period": "T3",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p28",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T4",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p28",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p28",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T6",
+      "sectionLetter": "A",
+      "room": "5D54",
+      "personId": "p28",
+      "cap": 23
+    },
+    {
+      "courseId": "c00",
+      "period": "M2",
+      "sectionLetter": "C",
+      "room": "5D10",
+      "personId": "p29",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M4",
+      "sectionLetter": "B",
+      "room": "5D10",
+      "personId": "p29",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M5",
+      "sectionLetter": "C",
+      "room": "5D10",
+      "personId": "p29",
+      "cap": 21
+    },
+    {
+      "courseId": "c13",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5D6",
+      "personId": "p30",
+      "cap": 16
+    },
+    {
+      "courseId": "c02",
+      "period": "M5",
+      "sectionLetter": "B",
+      "room": "5D6",
+      "personId": "p30",
+      "cap": 23
+    },
+    {
+      "courseId": "c02",
+      "period": "M6",
+      "sectionLetter": "B",
+      "room": "5D6",
+      "personId": "p30",
+      "cap": 23
+    },
+    {
+      "courseId": "c05",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p31",
+      "cap": 22
+    },
+    {
+      "courseId": "c05",
+      "period": "T6",
+      "sectionLetter": "A",
+      "room": "5F4",
+      "personId": "p31",
+      "cap": 22
+    },
+    {
+      "courseId": "c00",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5F8",
+      "personId": "p32",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M4",
+      "sectionLetter": "C",
+      "room": "5F8",
+      "personId": "p32",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "M5",
+      "sectionLetter": "B",
+      "room": "5F8",
+      "personId": "p32",
+      "cap": 21
+    },
+    {
+      "courseId": "c06",
+      "period": "T4",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p33",
+      "cap": 22
+    },
+    {
+      "courseId": "c07",
+      "period": "T5",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p33",
+      "cap": 23
+    },
+    {
+      "courseId": "c07",
+      "period": "T6",
+      "sectionLetter": "A",
+      "room": "5D8",
+      "personId": "p33",
+      "cap": 23
+    },
+    {
+      "courseId": "c00",
+      "period": "T3",
+      "sectionLetter": "B",
+      "room": "5F10",
+      "personId": "p34",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T4",
+      "sectionLetter": "B",
+      "room": "5F10",
+      "personId": "p34",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T5",
+      "sectionLetter": "B",
+      "room": "5F10",
+      "personId": "p34",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T6",
+      "sectionLetter": "A",
+      "room": "5F10",
+      "personId": "p34",
+      "cap": 21
+    },
+    {
+      "courseId": "c04",
+      "period": "M1",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p35",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "M2",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p35",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5F2",
+      "personId": "p35",
+      "cap": 23
+    },
+    {
+      "courseId": "c00",
+      "period": "T1",
+      "sectionLetter": "C",
+      "room": "5D6",
+      "personId": "p36",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T2",
+      "sectionLetter": "C",
+      "room": "5D6",
+      "personId": "p36",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T4",
+      "sectionLetter": "C",
+      "room": "5D6",
+      "personId": "p36",
+      "cap": 21
+    },
+    {
+      "courseId": "c00",
+      "period": "T5",
+      "sectionLetter": "C",
+      "room": "5D6",
+      "personId": "p36",
+      "cap": 21
+    },
+    {
+      "courseId": "c04",
+      "period": "T2",
+      "sectionLetter": "B",
+      "room": "5F6",
+      "personId": "p37",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T3",
+      "sectionLetter": "B",
+      "room": "5F6",
+      "personId": "p37",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p37",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p37",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "M6",
+      "sectionLetter": "A",
+      "room": "5D2",
+      "personId": "p37",
+      "cap": 23
+    },
+    {
+      "courseId": "c04",
+      "period": "T4",
+      "sectionLetter": "B",
+      "room": "5F6",
+      "personId": "p38",
+      "cap": 23
+    },
+    {
+      "courseId": "c06",
+      "period": "M3",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p39",
+      "cap": 22
+    },
+    {
+      "courseId": "c06",
+      "period": "M4",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p39",
+      "cap": 22
+    },
+    {
+      "courseId": "c06",
+      "period": "M5",
+      "sectionLetter": "A",
+      "room": "5D14",
+      "personId": "p39",
+      "cap": 22
+    }
+  ]
+}

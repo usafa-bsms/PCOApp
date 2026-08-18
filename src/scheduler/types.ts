@@ -11,6 +11,8 @@ export type ConstraintType =
   | 'consecutive_periods'
   | 'single_day'
   | 'no_forced_break'
+  | 'single_offering_peak'
+  | 'two_section_same_block'
 export type RunStatus = 'running' | 'done' | 'failed'
 export type AssignmentRole = 'director' | 'teacher'
 
@@ -82,6 +84,8 @@ export interface SolveInput {
   preferences: Preference[]
   locks: Lock[]
   constraints: Constraint[]
+  /** Room identifiers. If empty, room capacity is treated as unbounded. */
+  rooms?: string[]
 }
 
 export interface Assignment {

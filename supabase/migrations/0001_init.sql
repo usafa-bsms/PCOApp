@@ -11,7 +11,8 @@ create type public.day_enum as enum ('M', 'T');
 create type public.part_of_day as enum ('morning', 'afternoon');
 create type public.constraint_type as enum
   ('spread_sections', 'morning_min', 'afternoon_min', 'balance_mt',
-   'consecutive_periods', 'single_day', 'no_forced_break');
+   'consecutive_periods', 'single_day', 'no_forced_break',
+   'single_offering_peak', 'two_section_same_block');
 create type public.run_status as enum ('running', 'done', 'failed');
 create type public.assignment_role as enum ('director', 'teacher');
 

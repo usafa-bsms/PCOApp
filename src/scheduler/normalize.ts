@@ -39,6 +39,7 @@ export function normalizeInput(input: SolveInput): SolveInput {
   const constraints = [...input.constraints].sort(
     (a, b) => (a.type < b.type ? -1 : a.type > b.type ? 1 : 0)
   )
+  const rooms = input.rooms ? [...input.rooms].sort() : undefined
 
-  return { persons, courses, qualifications, periods, preferences, locks, constraints }
+  return { persons, courses, qualifications, periods, preferences, locks, constraints, rooms }
 }

@@ -171,6 +171,41 @@ export function evaluateConstraints(
         }
         break
       }
+      case 'single_offering_peak': {
+        // Single-offering courses must not run in slot 1, 5, or 6 (ICs have a
+        // high excusal rate there). Applied to courses with exactly one section.
+        for (const [courseId, list] of byCourse) {
+          if (list.length !== 1) continue
+          const slot = slotOf(list[0].period)
+          if (slot === 1 || slot === 5 || slot === 6) {
+            violations.push({
+              constraintType: 'single_offering_peak',
+              penalty: c.penalty,
+              detail: `${courseId}: single offering at slot ${slot} (1/5/6 discouraged)`,
+            })
+          }
+        }
+        break
+      }
+      case 'two_section_same_block': {
+        // For a course with exactly two sections, back-to-back sections within
+        // the same double-period block (M1+M2, M3+M4, M5+M6) are discouraged.
+        // Spanning two blocks (M2+M3) is fine. Double blocks: {1,2},{3,4},{5,6}.
+        const inSameBlock = (a: number, b: number): boolean =>
+          Math.abs(a - b) === 1 && Math.floor((a - 1) / 2) === Math.floor((b - 1) / 2)
+        for (const [courseId, list] of byCourse) {
+          if (list.length !== 2) continue
+          const [x, y] = list.map((a) => slotOf(a.period))
+          if (inSameBlock(x, y)) {
+            violations.push({
+              constraintType: 'two_section_same_block',
+              penalty: c.penalty,
+              detail: `${courseId}: 2 sections back-to-back in one double block`,
+            })
+          }
+        }
+        break
+      }
     }
   }
 

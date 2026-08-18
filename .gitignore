@@ -17,3 +17,5 @@ dist/
 
 # logs
 *.log
+# local scratch
+/temp/
