@@ -1,31 +1,54 @@
 import type { SolveResult, Assignment, Constraint } from './types'
+import { areConsecutivePeriods } from '../lib/periods'
 
-type ByCourse = Map<string, Assignment[]>
+const teachers = (assignments: Assignment[]): Assignment[] =>
+  assignments.filter((a) => a.role !== 'director')
+
+const dayOf = (period: string): string => period.charAt(0)
+const slotOf = (period: string): number => Number(period.charAt(1))
 
 /**
  * Evaluate every soft constraint against the assignments. Deterministic:
  * iteration order is fixed; each constraint type produces a sorted list of
  * Violations so results are reproducible regardless of call sequence.
+ *
+ * Classification is approximate until the scheduling-guidance PDF is encoded;
+ * penalty magnitudes and detection details can be tuned there.
  */
 export function evaluateConstraints(
   assignments: Assignment[],
   constraints: Constraint[]
 ): { violations: SolveResult['violations']; score: number } {
-  const byCourse: ByCourse = new Map()
-  for (const a of assignments) {
+  const ts = teachers(assignments)
+  const byCourse: Map<string, Assignment[]> = new Map()
+  for (const a of ts) {
     const list = byCourse.get(a.courseId)
     if (list) list.push(a)
     else byCourse.set(a.courseId, [a])
   }
+
+  const byPerson: Map<string, Assignment[]> = new Map()
+  for (const a of ts) {
+    const list = byPerson.get(a.personId)
+    if (list) list.push(a)
+    else byPerson.set(a.personId, [a])
+  }
+
+  const periodCodes = [...new Set(ts.map((a) => a.period))].sort()
+  const periods = periodCodes.map((code) => ({
+    code,
+    day: dayOf(code) as 'M' | 'T',
+    slot: slotOf(code),
+    partOfDay: slotOf(code) <= 3 ? ('morning' as const) : ('afternoon' as const),
+  }))
 
   const violations: SolveResult['violations'] = []
 
   for (const c of constraints) {
     switch (c.type) {
       case 'balance_mt': {
-        // Penalize imbalance between M and T totals.
-        const m = assignments.filter((a) => a.period.startsWith('M')).length
-        const t = assignments.filter((a) => a.period.startsWith('T')).length
+        const m = ts.filter((a) => dayOf(a.period) === 'M').length
+        const t = ts.filter((a) => dayOf(a.period) === 'T').length
         const imbalance = Math.abs(m - t)
         if (imbalance > 0) {
           violations.push({
@@ -38,7 +61,7 @@ export function evaluateConstraints(
       }
       case 'morning_min': {
         const min = c.params.min ?? 0
-        const morning = assignments.filter((a) => Number(a.period.slice(1)) <= 3).length
+        const morning = ts.filter((a) => slotOf(a.period) <= 3).length
         if (morning < min) {
           violations.push({
             constraintType: 'morning_min',
@@ -50,7 +73,7 @@ export function evaluateConstraints(
       }
       case 'afternoon_min': {
         const min = c.params.min ?? 0
-        const afternoon = assignments.filter((a) => Number(a.period.slice(1)) >= 4).length
+        const afternoon = ts.filter((a) => slotOf(a.period) >= 4).length
         if (afternoon < min) {
           violations.push({
             constraintType: 'afternoon_min',
@@ -61,11 +84,10 @@ export function evaluateConstraints(
         break
       }
       case 'spread_sections': {
-        // Large multi-section courses should not all land on the same day.
         for (const [courseId, list] of byCourse) {
           if (list.length < 2) continue
-          const m = list.filter((a) => a.period.startsWith('M')).length
-          const t = list.filter((a) => a.period.startsWith('T')).length
+          const m = list.filter((a) => dayOf(a.period) === 'M').length
+          const t = list.filter((a) => dayOf(a.period) === 'T').length
           const spread = Math.abs(m - t)
           if (spread === list.length) {
             violations.push({
@@ -73,6 +95,78 @@ export function evaluateConstraints(
               penalty: c.penalty * (spread - 1),
               detail: `${courseId}: all ${list.length} sections on one day`,
             })
+          }
+        }
+        break
+      }
+      case 'consecutive_periods': {
+        // Prefer consecutive classes: penalize gaps between a person's classes
+        // on the same day (M4->M5 is a lunch gap, so it counts as a gap).
+        for (const [personId, list] of byPerson) {
+          const perDay = new Map<string, number[]>()
+          for (const a of list) {
+            const d = dayOf(a.period)
+            const arr = perDay.get(d) ?? []
+            arr.push(slotOf(a.period))
+            perDay.set(d, arr)
+          }
+          for (const [day, slots] of [...perDay.entries()].sort()) {
+            const sorted = [...slots].sort((x, y) => x - y)
+            if (sorted.length < 2) continue
+            for (let i = 1; i < sorted.length; i++) {
+              const prev = `${day}${sorted[i - 1]}`
+              const cur = `${day}${sorted[i]}`
+              if (!areConsecutivePeriods(periods as never, prev, cur)) {
+                violations.push({
+                  constraintType: 'consecutive_periods',
+                  penalty: c.penalty,
+                  detail: `${personId}: gap between ${prev} and ${cur}`,
+                })
+              }
+            }
+          }
+        }
+        break
+      }
+      case 'single_day': {
+        // Prefer an instructor's classes on one day rather than split M+T.
+        for (const [personId, list] of byPerson) {
+          const days = new Set(list.map((a) => dayOf(a.period)))
+          if (days.size > 1) {
+            violations.push({
+              constraintType: 'single_day',
+              penalty: c.penalty,
+              detail: `${personId} teaches on ${[...days].sort().join('+')}`,
+            })
+          }
+        }
+        break
+      }
+      case 'no_forced_break': {
+        // Avoid a mid-day gap with classes on both sides (e.g. M1,M3,M5).
+        for (const [personId, list] of byPerson) {
+          const perDay = new Map<string, number[]>()
+          for (const a of list) {
+            const d = dayOf(a.period)
+            const arr = perDay.get(d) ?? []
+            arr.push(slotOf(a.period))
+            perDay.set(d, arr)
+          }
+          for (const [, slots] of [...perDay.entries()].sort()) {
+            if (slots.length < 3) continue
+            const sorted = [...slots].sort((x, y) => x - y)
+            for (let i = 1; i < sorted.length - 1; i++) {
+              const prev = sorted[i - 1]
+              const cur = sorted[i]
+              const next = sorted[i + 1]
+              if (cur - prev > 1 && next - cur > 1) {
+                violations.push({
+                  constraintType: 'no_forced_break',
+                  penalty: c.penalty,
+                  detail: `${personId}: hole at slot ${cur} between ${prev} and ${next}`,
+                })
+              }
+            }
           }
         }
         break

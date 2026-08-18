@@ -1,6 +1,6 @@
 import type { Day, PartOfDay } from '../lib/periods'
 
-export type Role = 'faculty' | 'academic_director' | 'lead_admin'
+export type Role = 'faculty' | 'new_instructor' | 'academic_director' | 'lead_admin'
 export type QualLevel = 'can_teach' | 'has_taught' | 'can_direct'
 export type LockType = 'course_director' | 'assignment'
 export type ConstraintType =
@@ -8,6 +8,9 @@ export type ConstraintType =
   | 'morning_min'
   | 'afternoon_min'
   | 'balance_mt'
+  | 'consecutive_periods'
+  | 'single_day'
+  | 'no_forced_break'
 export type RunStatus = 'running' | 'done' | 'failed'
 export type AssignmentRole = 'director' | 'teacher'
 
@@ -17,12 +20,14 @@ export interface Person {
   role: Role
   /** Free-text label — context only, NOT authorization. */
   label?: string | null
+  /** Target course load (soft goal). Reduced manually for extra responsibilities. */
   courseLoad: number
 }
 
 export interface Course {
   id: string
   code: string
+  title?: string
   sections: number
   expectedEnrollment: number
 }
@@ -45,14 +50,19 @@ export interface Preference {
   kind: 'course' | 'period'
   courseId?: string
   period?: string
-  /** lower = stronger preference */
+  /** lower = stronger positive preference */
   rank: number
+  /** "will not teach X" / "cannot teach Y". Hard unless AD overrides. */
+  isHardExclusion?: boolean
 }
 
 export interface Lock {
-  personId: string
+  /** The person to force; undefined if only period/room/section are locked. */
+  personId?: string
   courseId: string
+  section?: number
   period?: string
+  roomId?: string
   lockType: LockType
 }
 
@@ -79,6 +89,7 @@ export interface Assignment {
   courseId: string
   section: number
   period: string
+  roomId?: string
   role: AssignmentRole
 }
 

@@ -1,7 +1,15 @@
-export type Role = 'faculty' | 'academic_director' | 'lead_admin'
+export type Role = 'faculty' | 'new_instructor' | 'academic_director' | 'lead_admin'
+
+export const DEFAULT_COURSE_LOAD: Record<Role, number> = {
+  faculty: 3,
+  new_instructor: 4,
+  academic_director: 3,
+  lead_admin: 3,
+}
 
 export const ROLE_RANK: Record<Role, number> = {
   faculty: 0,
+  new_instructor: 0,
   academic_director: 1,
   lead_admin: 2,
 }

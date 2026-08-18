@@ -34,7 +34,7 @@ export function normalizeInput(input: SolveInput): SolveInput {
   const locks = [...input.locks].sort(
     (a, b) =>
       byCode({ code: a.courseId }, { code: b.courseId }) ||
-      byName({ name: a.personId }, { name: b.personId })
+      byName({ name: a.personId ?? '' }, { name: b.personId ?? '' })
   )
   const constraints = [...input.constraints].sort(
     (a, b) => (a.type < b.type ? -1 : a.type > b.type ? 1 : 0)

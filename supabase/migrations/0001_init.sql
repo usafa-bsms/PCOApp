@@ -2,14 +2,16 @@
 -- Deterministic scheduling runs client-side; this DB persists inputs, locks,
 -- and the published schedule. RLS is the enforcement layer.
 
-create type public.role as enum ('faculty', 'academic_director', 'lead_admin');
+create type public.role as enum
+  ('faculty', 'new_instructor', 'academic_director', 'lead_admin');
 create type public.qual_level as enum ('can_teach', 'has_taught', 'can_direct');
 create type public.preference_kind as enum ('course', 'period');
 create type public.lock_type as enum ('course_director', 'assignment');
 create type public.day_enum as enum ('M', 'T');
 create type public.part_of_day as enum ('morning', 'afternoon');
 create type public.constraint_type as enum
-  ('spread_sections', 'morning_min', 'afternoon_min', 'balance_mt');
+  ('spread_sections', 'morning_min', 'afternoon_min', 'balance_mt',
+   'consecutive_periods', 'single_day', 'no_forced_break');
 create type public.run_status as enum ('running', 'done', 'failed');
 create type public.assignment_role as enum ('director', 'teacher');
 
@@ -71,7 +73,8 @@ create table public.preferences (
   kind public.preference_kind not null,
   course_id uuid references public.course_list(id),
   period_id uuid references public.periods(id),
-  rank int not null default 1, -- lower = stronger
+  rank int not null default 1, -- lower = stronger (for 'course'/'period' likes)
+  is_hard_exclusion boolean not null default false, -- "will not teach X / cannot teach Y"
   check ((kind = 'course' and course_id is not null) or
          (kind = 'period' and period_id is not null))
 );
@@ -79,9 +82,11 @@ create table public.preferences (
 create table public.locks (
   id uuid primary key default gen_random_uuid(),
   semester_id uuid not null references public.semesters(id),
-  person_id uuid not null references public.persons(id),
+  person_id uuid references public.persons(id), -- may be left null if not forced
   course_id uuid not null references public.course_list(id),
+  section int, -- which section (1..n) the lock applies to; null = applies broadly
   period_id uuid references public.periods(id),
+  room_id uuid references public.classrooms(id),
   lock_type public.lock_type not null,
   note text
 );
@@ -112,6 +117,7 @@ create table public.schedule_assignments (
   course_id uuid not null references public.course_list(id),
   section int not null,
   period_id uuid not null references public.periods(id),
+  room_id uuid references public.classrooms(id),
   role public.assignment_role not null default 'teacher'
 );
 

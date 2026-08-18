@@ -27,16 +27,20 @@ Order matters: `npm run build` runs `tsc -b` first, so it also type-checks. Run 
 
 ## Architecture (see docs/ARCHITECTURE.md for detail)
 - `src/scheduler/` — deterministic constraint-satisfaction solver (pure, side-effect-free, unit-tested). Preserve determinism: no randomness, sort/iterate inputs canonically.
-- `src/lib/rbac.ts` — role checks. Roles: `faculty`, `academic_director`, `lead_admin`. A `persons.label` free-text tag exists alongside role for auxiliary attributes (advisor, dept head, affiliate), NOT for authorization.
+- `src/lib/rbac.ts` — role checks. Roles: `faculty`, `new_instructor`, `academic_director`, `lead_admin`. A `persons.label` free-text tag exists alongside role for auxiliary attributes (advisor, dept head, affiliate), NOT for authorization.
 - `src/lib/periods.ts` — canonical M1–M6, T1–T6 with day(M/T) and part-of-day flags for constraints.
 - `supabase/migrations/*.sql` — schema + RLS. RLS is the enforcement layer; app role checks are UX only. Never trust client-side role checks.
 - Pages under `src/pages/`, data access in `src/lib/`.
 
 ## Key domain rules
-- 12 periods, 12 slots, named **M1–M6 / T1–T6**. Classrooms currently seat 23 but capacity is just data.
-- AD "locks" (assign a course director, force a course→period→instructor) are HARD; solver routes around them.
-- Everything else is a soft constraint, each with an integer penalty (higher = less likely to be violated; violated constraints are the ones relaxed first).
-- A PCO is scoped to a **semester**; all input tables carry a `semester_id`.
+- 12 periods, 12 slots, named **M1–M6 / T1–T6**. **LUNCH BREAK between M4 and M5** (and T4/T5): those are NOT consecutive — a teacher on M4+M5 has a break. `src/lib/periods.ts` encodes adjacency for this.
+- **Course load is a per-person TARGET** (default 3; `new_instructor` default 4), reduced manually for extra responsibilities (pilot, double-prep, etc.). It is a soft goal, not a hard cap. Manual input always wins.
+- Roles: `faculty`, `new_instructor`, `academic_director`, `lead_admin`. `persons.label` is a free-text tag (advisor, dept head, affiliate) for context only — NOT authorization.
+- **Locks are HARD and may pin any subset of course→section→period→room→instructor.** Person/period/room are each optional; solver keeps what's locked and fills the rest. A **course director is a course-level role** and does NOT by itself consume a teaching period or count toward load (directors may still teach separately — e.g. Math 243/253).
+- **Faculty preferences** = weighted points (lower `rank` = stronger) plus **hard exclusions** ("will not teach X" / "cannot teach Y"). Exclusions are hard; ADs may remove them.
+- Everything else is a **soft constraint**, each with an integer penalty (higher = relaxed/violated later). Known types: spread_sections, morning_min, afternoon_min, balance_mt, consecutive_periods, single_day (all-M or all-T), no_forced_break.
+- A PCO is scoped to a **semester**; all input tables carry `semester_id`. One active semester at a time; historical runs remain viewable/exportable.
+- Sample inputs arrive as **CSV**; I create a "Test" semester and load them. See `outstanding.md` for the latest questions (Q1–Q6).
 
 ## Gotchas
 - `gh api /...` in git-bash rewrites leading-slash paths (`/user` → `C:/.../Git/user`). Prefix with `MSYS_NO_PATHCONV=1`.
