@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 
 const NAV = [
   { to: '/', label: 'Home' },
+  { to: '/semesters', label: 'Semesters' },
   { to: '/roster', label: 'Roster' },
   { to: '/courses', label: 'Courses' },
   { to: '/qualifications', label: 'Qualifications' },

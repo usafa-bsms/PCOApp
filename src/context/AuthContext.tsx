@@ -32,12 +32,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   async function loadProfile(userId: string) {
-    const { data } = await supabase
+    // A person is now a per-semester persona linked to the auth account via
+    // auth_user_id; pick the persona from the active semester.
+    const { data, error } = await supabase
       .from('persons')
-      .select('name, role, label')
-      .eq('id', userId)
-      .maybeSingle()
-    setProfile(data as AuthProfile | null)
+      .select('name, role, label, semester:semesters!inner(is_active)')
+      .eq('auth_user_id', userId)
+    if (error || !data || data.length === 0) {
+      setProfile(null)
+      return
+    }
+    const active = (data as unknown as Array<{ name: string; role: Role; label: string | null; semester: { is_active: boolean } }>).find(
+      (p) => p.semester.is_active,
+    ) ?? data[0] as unknown as { name: string; role: Role; label: string | null }
+    setProfile({ name: active.name, role: active.role, label: active.label })
   }
 
   useEffect(() => {

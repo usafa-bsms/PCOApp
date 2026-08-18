@@ -3,10 +3,11 @@ import { useAuth } from './context/AuthContext'
 import { Layout } from './components/Layout'
 import { LoginPage } from './pages/LoginPage'
 import { HomePage } from './pages/HomePage'
+import { SemestersPage } from './pages/SemestersPage'
+import { RosterPage } from './pages/RosterPage'
+import { CoursesPage } from './pages/CoursesPage'
+import { QualificationsPage } from './pages/QualificationsPage'
 import {
-  RosterPage,
-  CoursesPage,
-  QualificationsPage,
   PreferencesPage,
   LocksPage,
   ConstraintsPage,
@@ -34,6 +35,7 @@ export function AppRouter() {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/semesters" element={<SemestersPage />} />
           <Route path="/roster" element={<RosterPage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/qualifications" element={<QualificationsPage />} />

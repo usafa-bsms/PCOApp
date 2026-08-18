@@ -33,3 +33,23 @@ main { padding-top: 8px; }
 
 .error { color: #b91c1c; }
 .muted { color: #777; font-size: 0.9em; }
+
+button { padding: 6px 12px; border: 1px solid #bbb; border-radius: 4px; background: #fff; cursor: pointer; }
+button:hover { background: #eef2ff; }
+button:disabled { opacity: 0.5; cursor: default; }
+button.danger { border-color: #f0b9b9; color: #b91c1c; }
+button.danger:hover { background: #fdf0f0; }
+button.secondary { color: #2563eb; border-color: #bcd2f0; }
+
+input, select { padding: 6px 8px; border: 1px solid #bbb; border-radius: 4px; }
+
+.table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+.table th, .table td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+.table th { background: #f1f3f7; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; align-items: center; margin: 8px 0; }
+.row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+.check { display: inline-flex; gap: 6px; align-items: center; font-size: 0.9em; }
+.scroll { overflow-x: auto; }
+.table.qual th { writing-mode: vertical-rl; }
+.qualcells input { margin: 0 2px; }

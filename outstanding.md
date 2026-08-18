@@ -65,6 +65,7 @@ The xlsx has one double-period course (Data Sci 421, occupies 2 periods) and
 courses with Room `NONE` (Math 420, OpsRsch 305 = independent-study style). The
 solver currently treats every section as single-period. Should double-period and
 NONE-room courses get dedicated handling?
+ANSWER: We need to be able to designate a course as a double period courses, but in general we will lock in the periods and that will not need to be scheduled. If it gets a room that isn't NONE then it needs to hold that room across both periods. For NONE rooms, that should be a room that ADs can lock in (for a course that doesn't meet in a classroom), but shouldn't be assigned by the algorithm. We will manually designate every course that doesn't need a room.
 
 ### Q7. Search-based solver upgrade
 The greedy scaffold now reliably places all 116 sections deterministically with
@@ -72,10 +73,12 @@ rooms, but it does NOT optimize the soft guidance targets (spreading, morning
 density, 25%-afternoon, minimizing penalty sum). Next step is a constraint-search
 solver (penalty-based relaxation, deterministic) behind the same `SolveResult`
 interface. Confirm you want that next, before the DB/history feature.
+ANSWER: I'd rather work out the DB/history features and UI stuff before focusing on the solver. Let me know what url I should visit and how I should log in (make a role for harris.butler@afacademy.af.edu as an AD to log in) to try out the app.
 
 ### Q8. Confirm synthetic quals for real runs
 The Fall 2026 quals are synthetic placeholders. When a real letter-of-X (and
 preferences) exist, the fixture and solver should use them. No action needed now.
+ANSWER: make this something I can edit in the app when I'm testing it. I'll edit people's qualifications and rerun the algorithm to test it.
 
 ---
 
