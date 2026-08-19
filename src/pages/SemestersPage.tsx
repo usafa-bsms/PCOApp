@@ -1,13 +1,25 @@
 import { useState } from 'react'
 import { useSemester } from '../context/SemesterContext'
-import { copySemester, createSemester } from '../lib/api'
+import { copySemester, createSemester, updateSemester } from '../lib/api'
 import { Crud, ErrorBox, useAsyncError } from './Crud'
+import type { Semester } from '../lib/db-types'
 
 export function SemestersPage() {
   const { semesters, refresh, activate } = useSemester()
   const { error, run } = useAsyncError()
   const [newName, setNewName] = useState('')
   const [copyName, setCopyName] = useState('')
+  const [editId, setEditId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
+
+  async function onSaveEdit(s: Semester) {
+    const name = editName.trim()
+    if (!name) return
+    const ok = await run(() => updateSemester(s.id, { name }))
+    if (ok === undefined) return
+    setEditId(null)
+    await refresh()
+  }
 
   return (
     <Crud title="Semesters" note="One active semester at a time. Carry a semester forward to clone its roster, course load, and courses.">
@@ -21,22 +33,41 @@ export function SemestersPage() {
           {semesters.map((s) => (
             <tr key={s.id}>
               <td>{s.is_active ? <strong>Active</strong> : <span className="muted">—</span>}</td>
-              <td>{s.name}</td>
               <td>
-                {!s.is_active && (
-                  <button onClick={() => void run(async () => { await activate(s.id) })}>Activate</button>
+                {editId === s.id
+                  ? <input value={editName} onChange={(e) => setEditName(e.target.value)} />
+                  : s.name}
+              </td>
+              <td>
+                {editId === s.id ? (
+                  <>
+                    <button onClick={() => void onSaveEdit(s)}>Save</button>
+                    <button className="secondary" onClick={() => setEditId(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    {!s.is_active && (
+                      <button onClick={() => void run(async () => { await activate(s.id) })}>Activate</button>
+                    )}
+                    <button
+                      className="secondary"
+                      onClick={() => { setEditId(s.id); setEditName(s.name) }}
+                    >
+                      Edit name
+                    </button>
+                    <button
+                      className="secondary"
+                      onClick={() => void run(async () => {
+                        const name = copyName.trim() || `${s.name} (copy)`
+                        await copySemester(s.id, name)
+                        await refresh()
+                        setCopyName('')
+                      })}
+                    >
+                      Carry forward…
+                    </button>
+                  </>
                 )}
-                <button
-                  className="secondary"
-                  onClick={() => void run(async () => {
-                    const name = copyName.trim() || `${s.name} (copy)`
-                    await copySemester(s.id, name)
-                    await refresh()
-                    setCopyName('')
-                  })}
-                >
-                  Carry forward…
-                </button>
               </td>
             </tr>
           ))}

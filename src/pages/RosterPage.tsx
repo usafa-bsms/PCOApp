@@ -15,6 +15,9 @@ export function RosterPage() {
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<Role>('faculty')
   const [loadVal, setLoadVal] = useState(3)
+  const [editId, setEditId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editEmail, setEditEmail] = useState('')
 
   async function load() {
     if (!active) return
@@ -34,6 +37,21 @@ export function RosterPage() {
     await load()
   }
 
+  async function onSaveEdit(personId: string) {
+    const ok = await run(() => updatePerson(personId, {
+      name: editName.trim(), email: editEmail.trim(),
+    }))
+    if (ok === undefined) return
+    setEditId(null)
+    await load()
+  }
+
+  function startEdit(p: Person) {
+    setEditId(p.id)
+    setEditName(p.name)
+    setEditEmail(p.email)
+  }
+
   return (
     <Crud title="Roster" note={`${people.length} instructors in ${active?.name ?? 'the active semester'}.`}>
       <ErrorBox error={error} />
@@ -43,8 +61,16 @@ export function RosterPage() {
         <tbody>
           {people.map((p) => (
             <tr key={p.id}>
-              <td>{p.name}</td>
-              <td>{p.email}</td>
+              <td>
+                {editId === p.id
+                  ? <input value={editName} onChange={(e) => setEditName(e.target.value)} />
+                  : p.name}
+              </td>
+              <td>
+                {editId === p.id
+                  ? <input value={editEmail} onChange={(e) => setEditEmail(e.target.value)} />
+                  : p.email}
+              </td>
               <td>
                 <select
                   value={p.role}
@@ -69,6 +95,14 @@ export function RosterPage() {
                 />
               </td>
               <td>
+                {editId === p.id ? (
+                  <>
+                    <button onClick={() => void onSaveEdit(p.id)}>Save</button>
+                    <button className="secondary" onClick={() => setEditId(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <button className="secondary" onClick={() => startEdit(p)}>Edit</button>
+                )}
                 <button className="danger" onClick={() => void run(async () => { await deletePerson(p.id); await load() })}>
                   Remove
                 </button>

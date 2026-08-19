@@ -22,16 +22,16 @@ export async function createSemester(name: string): Promise<string> {
 }
 
 export async function setActiveSemester(id: string): Promise<void> {
-  const { error: off } = await supabase
-    .from('semesters')
-    .update({ is_active: false })
-    .neq('id', id)
-  if (off) throw off
-  const { error: on } = await supabase
-    .from('semesters')
-    .update({ is_active: true })
-    .eq('id', id)
-  if (on) throw on
+  const { error } = await supabase.rpc('activate_semester', { p_semester_id: id })
+  if (error) throw error
+}
+
+export async function updateSemester(
+  id: string,
+  patch: { name?: string; starts_on?: string | null; ends_on?: string | null },
+): Promise<void> {
+  const { error } = await supabase.from('semesters').update(patch).eq('id', id)
+  if (error) throw error
 }
 
 /** Clone roster + course load + courses (and rooms/periods/quals) into a new semester. */
@@ -61,21 +61,26 @@ export async function addPerson(input: {
   role: Role
   courseLoad: number
   label?: string
-}): Promise<void> {
-  const { error } = await supabase.from('persons').insert({
-    semester_id: input.semesterId,
-    name: input.name,
-    email: input.email,
-    role: input.role,
-    course_load: input.courseLoad,
-    label: input.label ?? null,
-  })
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('persons')
+    .insert({
+      semester_id: input.semesterId,
+      name: input.name,
+      email: input.email,
+      role: input.role,
+      course_load: input.courseLoad,
+      label: input.label ?? null,
+    })
+    .select('id')
+    .single()
   if (error) throw error
+  return data.id
 }
 
 export async function updatePerson(
   id: string,
-  patch: { name?: string; role?: Role; course_load?: number; label?: string },
+  patch: { name?: string; email?: string; role?: Role; course_load?: number; label?: string },
 ): Promise<void> {
   const { error } = await supabase.from('persons').update(patch).eq('id', id)
   if (error) throw error
@@ -103,15 +108,34 @@ export async function addCourse(input: {
   sections: number
   expectedEnrollment: number
   isDoublePeriod?: boolean
-}): Promise<void> {
-  const { error } = await supabase.from('course_list').insert({
-    semester_id: input.semesterId,
-    code: input.code,
-    title: input.title ?? null,
-    sections: input.sections,
-    expected_enrollment: input.expectedEnrollment,
-    is_double_period: input.isDoublePeriod ?? false,
-  })
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('course_list')
+    .insert({
+      semester_id: input.semesterId,
+      code: input.code,
+      title: input.title ?? null,
+      sections: input.sections,
+      expected_enrollment: input.expectedEnrollment,
+      is_double_period: input.isDoublePeriod ?? false,
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function updateCourse(
+  id: string,
+  patch: {
+    code?: string
+    title?: string | null
+    sections?: number
+    expected_enrollment?: number
+    is_double_period?: boolean
+  },
+): Promise<void> {
+  const { error } = await supabase.from('course_list').update(patch).eq('id', id)
   if (error) throw error
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSemester } from '../context/SemesterContext'
-import { addCourse, deleteCourse, fetchCourses } from '../lib/api'
+import { addCourse, deleteCourse, fetchCourses, updateCourse } from '../lib/api'
 import type { Course } from '../lib/db-types'
 import { Crud, ErrorBox, useAsyncError } from './Crud'
 
@@ -13,6 +13,12 @@ export function CoursesPage() {
   const [sections, setSections] = useState(1)
   const [enroll, setEnroll] = useState(0)
   const [double, setDouble] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null)
+  const [editCode, setEditCode] = useState('')
+  const [editTitle, setEditTitle] = useState('')
+  const [editSections, setEditSections] = useState(1)
+  const [editEnroll, setEditEnroll] = useState(0)
+  const [editDouble, setEditDouble] = useState(false)
 
   async function load() {
     if (!active) return
@@ -31,6 +37,25 @@ export function CoursesPage() {
     await load()
   }
 
+  function startEdit(c: Course) {
+    setEditId(c.id)
+    setEditCode(c.code)
+    setEditTitle(c.title ?? '')
+    setEditSections(c.sections)
+    setEditEnroll(c.expected_enrollment)
+    setEditDouble(c.is_double_period)
+  }
+
+  async function onSaveEdit(courseId: string) {
+    const ok = await run(() => updateCourse(courseId, {
+      code: editCode.trim(), title: editTitle.trim(),
+      sections: editSections, expected_enrollment: editEnroll, is_double_period: editDouble,
+    }))
+    if (ok === undefined) return
+    setEditId(null)
+    await load()
+  }
+
   return (
     <Crud title="Courses" note={`${courses.length} courses in ${active?.name ?? 'the active semester'}.`}>
       <ErrorBox error={error} />
@@ -39,12 +64,42 @@ export function CoursesPage() {
         <tbody>
           {courses.map((c) => (
             <tr key={c.id}>
-              <td>{c.code}</td>
-              <td>{c.title ?? ''}</td>
-              <td>{c.sections}</td>
-              <td>{c.expected_enrollment}</td>
-              <td>{c.is_double_period ? 'yes' : ''}</td>
-              <td><button className="danger" onClick={() => void run(async () => { await deleteCourse(c.id); await load() })}>Remove</button></td>
+              <td>
+                {editId === c.id
+                  ? <input value={editCode} onChange={(e) => setEditCode(e.target.value)} />
+                  : c.code}
+              </td>
+              <td>
+                {editId === c.id
+                  ? <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                  : c.title ?? ''}
+              </td>
+              <td>
+                {editId === c.id
+                  ? <input type="number" min={1} value={editSections} onChange={(e) => setEditSections(Number(e.target.value))} style={{ width: 60 }} />
+                  : c.sections}
+              </td>
+              <td>
+                {editId === c.id
+                  ? <input type="number" min={0} value={editEnroll} onChange={(e) => setEditEnroll(Number(e.target.value))} style={{ width: 80 }} />
+                  : c.expected_enrollment}
+              </td>
+              <td>
+                {editId === c.id
+                  ? <input type="checkbox" checked={editDouble} onChange={(e) => setEditDouble(e.target.checked)} />
+                  : c.is_double_period ? 'yes' : ''}
+              </td>
+              <td>
+                {editId === c.id ? (
+                  <>
+                    <button onClick={() => void onSaveEdit(c.id)}>Save</button>
+                    <button className="secondary" onClick={() => setEditId(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <button className="secondary" onClick={() => startEdit(c)}>Edit</button>
+                )}
+                <button className="danger" onClick={() => void run(async () => { await deleteCourse(c.id); await load() })}>Remove</button>
+              </td>
             </tr>
           ))}
           {courses.length === 0 && <tr><td colSpan={6} className="muted">No courses yet.</td></tr>}
