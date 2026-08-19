@@ -29,9 +29,15 @@ export async function setActiveSemester(id: string): Promise<void> {
 export async function updateSemester(
   id: string,
   patch: { name?: string; starts_on?: string | null; ends_on?: string | null },
-): Promise<void> {
-  const { error } = await supabase.from('semesters').update(patch).eq('id', id)
+): Promise<string> {
+  const { data, error } = await supabase
+    .from('semesters')
+    .update(patch)
+    .eq('id', id)
+    .select('id')
+    .single()
   if (error) throw error
+  return data.id
 }
 
 /** Clone roster + course load + courses (and rooms/periods/quals) into a new semester. */
@@ -81,9 +87,15 @@ export async function addPerson(input: {
 export async function updatePerson(
   id: string,
   patch: { name?: string; email?: string; role?: Role; course_load?: number; label?: string },
-): Promise<void> {
-  const { error } = await supabase.from('persons').update(patch).eq('id', id)
+): Promise<string> {
+  const { data, error } = await supabase
+    .from('persons')
+    .update(patch)
+    .eq('id', id)
+    .select('id')
+    .single()
   if (error) throw error
+  return data.id
 }
 
 export async function deletePerson(id: string): Promise<void> {
@@ -134,9 +146,15 @@ export async function updateCourse(
     expected_enrollment?: number
     is_double_period?: boolean
   },
-): Promise<void> {
-  const { error } = await supabase.from('course_list').update(patch).eq('id', id)
+): Promise<string> {
+  const { data, error } = await supabase
+    .from('course_list')
+    .update(patch)
+    .eq('id', id)
+    .select('id')
+    .single()
   if (error) throw error
+  return data.id
 }
 
 export async function deleteCourse(id: string): Promise<void> {
