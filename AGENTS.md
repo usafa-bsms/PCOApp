@@ -30,8 +30,10 @@ Order matters: `npm run build` runs `tsc -b` first, so it also type-checks. Run 
 - Real Fall 2026 dataset lives at `src/scheduler/__tests__/fixtures/fall2026.json` (16 courses, 116 sections, 41 instructors, 15 rooms, ground truth). Regenerate with `temp/parse_pco.py` from `Inputs/*.xlsx`. Keep this fixture hermetic; do not make tests require live Supabase.
 - `src/lib/rbac.ts` — role checks. Roles: `faculty`, `new_instructor`, `academic_director`, `lead_admin`. A `persons.label` free-text tag exists alongside role for auxiliary attributes (advisor, dept head, affiliate), NOT for authorization.
 - `src/lib/periods.ts` — canonical M1–M6, T1–T6 with day(M/T), slot, part-of-day, and lunch-aware adjacency (`areConsecutivePeriods`).
-- `supabase/migrations/*.sql` — schema + RLS. RLS is the enforcement layer; app role checks are UX only. Never trust client-side role checks.
-- Pages under `src/pages/`, data access in `src/lib/`.
+- `supabase/migrations/*.sql` — schema + RLS. RLS is the enforcement layer; app role checks are UX only. Never trust client-side role checks. **Migrations are applied live manually** (via the pg pooler in `temp/credentials.md`); there is no CI migration runner — after editing a migration SQL file, also run it against the DB.
+- Pages under `src/pages/`, data access in `src/lib/`, server mutations in `src/lib/api.ts`, active-semester state in `src/context/SemesterContext.tsx`.
+- CRUD UI pattern: tables in the pages use `useAsyncError().run()` + a guard like `if (ok === undefined) return` to swallow errors. This guard ONLY works if the wrapped mutate helper **returns a truthy value on success** (the new record id). Non-void helpers (e.g. legacy `Promise<void>`) resolve to `undefined`, which the guard reads as "error" and skips the follow-up reload/state change — leaving the UI stale. Page/`api.ts` mutate helpers that need a follow-up (`createPerson`, `createCourse`, `update*`, `createSemester` via `.select('id').single()`) must return the id. This bug bit twice (add-row and edit-save).
+- `src/lib/api.ts` now has `createX`/`updateX`/`deleteX` for semesters, persons, courses, plus `setQualification`. Keep the mutate-helpers-return-id rule there.
 
 ## Key domain rules
 - 12 periods, 12 slots, named **M1–M6 / T1–T6**. **LUNCH BREAK between M4 and M5** (and T4/T5): those are NOT consecutive — a teacher on M4+M5 has a break. `src/lib/periods.ts` encodes adjacency for this.
@@ -48,3 +50,6 @@ Order matters: `npm run build` runs `tsc -b` first, so it also type-checks. Run 
 ## Gotchas
 - `gh api /...` in git-bash rewrites leading-slash paths (`/user` → `C:/.../Git/user`). Prefix with `MSYS_NO_PATHCONV=1`.
 - Tests: nothing requires a live Supabase yet; solver tests are pure. Do not add tests that need network credentials.
+- **RLS eye is `current_user_role()`** (defined in `0001`, patched in `0005`): it now (*since `0005`*) returns the user's role from ANY persona linked via `auth_user_id`, preferring the active semester when one exists. It used to require an *active* semester — with no active semester it returned NULL, so the same user's reads suddenly looked empty (appeared as a "wiped roster") and writes failed RLS. Prefer atomic `security definer` RPCs (e.g. `activate_semester(uuid)`, `copy_semester`) for multi-statement writes that mutate state that `current_user_role()` depends on (like which semester is active); a client-side two-step update can strand the app in a broken intermediate state.
+- The role fallback (prefer active, else any persona) intentionally keeps an admin's powers if the active semester lacks their persona. Be deliberate if you add stricter per-semester authorization later.
+- Create new auth users via `POST /auth/v1/signup` (postgrest rejects hand-inserted `auth.users` rows), then set `email_confirmed_at=now()` and link `persons.auth_user_id` by email. See HANDOFF "Login gotcha".

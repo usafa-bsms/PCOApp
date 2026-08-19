@@ -1,90 +1,74 @@
-# HANDOFF — August 18 evening session
+# HANDOFF — August 19 evening session
 
 Status and next steps for whoever resumes this. Repo: `usafa-bsms/PCOApp`,
-local `C:\Users\Harris.Butler\PCOApp` (Windows, git-bash/MSYS).
+local `C:\Users\Harris.Butler\PCOApp` (Windows, git-bash/MSYS). Current work: the
+CRUD foundation is complete and tested; next is wiring the scheduler/solver +
+preferences/locks/constraints into the app.
 
-## Goal for the user
-Test-drive the deployed app: log in as `harris.butler@afacademy.af.edu`
-(academic_director), carry a semester forward, add/remove instructors and
-courses, and edit qualifications.
+## Current state (verified)
+- **Live Supabase** (`lqvebfpshohqchympzby.supabase.co`, `us-east-2`): migrated
+  + seeded, `fall2026` fixture present. `Fall 2026` is the active semester (16
+  courses, 41 instructors, 15 rooms, 12 periods, quals populated). A
+  `Fall 2026 (copy)` semester also exists (created during testing) — both
+  rosters intact.
+- **Auth**: `harris.butler@afacademy.af.edu` / academic_director account exists,
+  email confirmed, linked to the persona in both semesters. Temp password
+  `7da5eb579fc6` (in `temp/credentials.md`) — **must be changed** in Supabase Auth.
+- **Schema** (`supabase/migrations/0001..0005`, all applied live):
+  - Per-semester roster; `copy_semester(uuid,text)` and
+    **`activate_semester(uuid)`** security-definer RPCs (AD/lead guarded).
+  - `current_user_role()` (*patched in `0005`*) returns role from ANY linked
+    persona, preferring the active semester — so losing the active semester no
+    longer wipes privileges / hides the roster.
+  - RLS: AD/lead write persons, courses, quals, semesters.
+- **UI shipped** (routes: Home, Semesters, Roster, Courses, Qualifications).
+  Preferences/Locks/Constraints/Schedule are placeholders:
+  - Semesters: create empty, Activate, edit name, carry forward.
+  - Roster/Courses: list, add, remove, **per-row Edit** (Save/Cancel).
+  - Qualifications: editable grid, saved per-checkbox.
+  - CRUD add/edit updates the table in place (helpers return the record id).
+- **Deployed**: https://usafa-bsms.github.io/PCOApp/ — GitHub Actions deploys on
+  push to `main` (secrets `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` set).
 
-## What is DONE and verified
-- **Live Supabase** (`lqvebfpshohqchympzby.supabase.co`, region `us-east-2`):
-  migrated + seeded. `Fall 2026` is the active semester (16 courses, 41
-  instructors, 15 rooms, 12 periods, quals populated).
-- **Schema** (`supabase/migrations/0001..0004`, all applied live):
-  - Roster is **per-semester** (`persons.semester_id`, `auth_user_id` login
-    link, `unique(semester_id, email)`).
-  - `course_list.is_double_period`; `classrooms.assignable` for NONE-rooms.
-  - `copy_semester(source_id, name)` RPC clones roster + course load + courses
-    (plus rooms/periods/quals). AD/lead only (security-definer guarded).
-  - `current_user_role()` + `qualifications_for_semester()` helpers.
-  - RLS: AD/lead can write persons, courses, quals, semesters.
-- **UI** built and shipped (routes: Home, Semesters, Roster, Courses,
-  Qualifications; Preferences/Locks/Constraints/Schedule remain placeholders):
-  - Semesters: create empty, activate, **carry forward**.
-  - Roster: list, add, remove, edit role + course load.
-  - Courses: list, add, remove (incl. double-period flag).
-  - Qualifications: editable grid (can_teach / has_taught / can_direct), saved
-    per-checkbox.
-  - `SemesterContext` (active-semester provider), `AuthContext` now matches
-    personas via `auth_user_id`.
-- **Deployed**: GitHub Pages live at **https://usafa-bsms.github.io/PCOApp/**
-  (build_type "workflow"; repo secrets `VITE_SUPABASE_URL` and
-  `VITE_SUPABASE_PUBLISHABLE_KEY` are set). Deploy runs on push to `main`.
-- **Smoke test**: with a throwaway AD account I verified end-to-end via REST —
-  sign-in, read semesters/persons/courses/quals, `copy_semester`, add/delete
-  person, add/set-qualification/delete course, current_user_role. All pass.
-  (That throwaway account was removed afterward.)
+## Checks passing
+- `npm test` — 13 pass (periods + solver + fixture), pure, no network.
+- `npm run build` — passes (tsc -b, then vite).
+- `npm run lint` — 0 errors (benign react-refresh/exhaustive-deps warnings).
 
-## What is NOT done (blocked / left for next session)
-1. **Create the `harris.butler@afacademy.af.edu` login.** Supabase's *signup*
-   endpoint (the ONLY reliable path — see "Login gotcha" below) is currently
-   **rate-limited** (429) from repeated attempts; let it cool (overnight should
-   be enough). Everything is staged: the AD persona `Butler, Harris` exists in
-   the active semester (currently unlinked), and credentials are in
-   `temp/credentials.md`.
+## NEXT SESSION — build the scheduling feature (NOT yet wired)
+The deterministic solver already EXISTS under `src/scheduler/` (pure,
+unit-tested): `solve()` = `solveCore` (greedy, person-period + room-count cap)
+then `assignRooms` (keep instructor's room unless a schedule break) —
+`src/scheduler/{solver,rooms,constraints,normalize,types}.ts`, exported from
+`src/scheduler/index.ts` (`solve`, `evaluateConstraints`, `normalizeInput`).
+It is only missing the UI + DB wiring. Suggested order:
 
-### Login gotcha (critical)
-Supabase rejects logins for auth users **hand-inserted into `auth.users` by
-SQL** with `Database error querying schema` (GoTrue only trusts users created
-by its own flow). The ONLY working approach verified:
-   1. `POST /auth/v1/signup` with `{email, password}` (via `@supabase` client or
-      curl with the publishable key).
-   2. Set `email_confirmed_at = now()` on the resulting `auth.users` row.
-   3. Link the pre-made persona: `update public.persons set auth_user_id = '<uid>'
-      where email = 'harris.butler@afacademy.af.edu'`.
-   4. Sign in and confirm role reads via `current_user_role()`.
-   (Also note: `auth.identities.email` is a generated column; and
-   `persons.auth_user_id` is `on delete cascade` — deleting an auth user deletes
-   its linked persona, which is how we lost the first Butler persona. Recreated.)
-
-### Steps to finish tomorrow
-1. Wait out the signup rate limit, then `signup` harris:
-   `curl -X POST https://lqvebfpshohqchympzby.supabase.co/auth/v1/signup -H "apikey: $KEY" -H "Content-Type: application/json" -d '{"email":"harris.butler@afacademy.af.edu","password":"7da5eb579fc6"}'`
-   (`$KEY` in `temp/credentials.md`).
-2. Connect to the DB (pooler, `temp/credentials.md`) and run:
-   `update auth.users set email_confirmed_at=now() where email='harris.butler@afacademy.af.edu';`
-   `update public.persons set auth_user_id=(select id from auth.users where email='harris.butler@afacademy.af.edu') where email='harris.butler@afacademy.af.edu';`
-3. Give the user the URL + temp password (`7da5eb579fc6`); remind them to change
-   it in Supabase Auth later.
+1. **Preferences**, **Locks**, **Constraints** pages (currently placeholders in
+   `src/pages/pages.tsx` → `placeholder()`). Schema already has tables
+   `preferences`, `locks`, `constraints` (input tables with `semester_id`). Build
+   CRUD + api.ts helpers mirroring the Roster/Courses pattern. Remember the
+   AD's external hard exclusions are only removable by AD.
+   - `constraints` model: read-only list of soft constraints with penalty? Or
+     AD-editable; decide what `constraints` page should manage (the types are
+     in `0001`; see `outstanding.md` for the guidance rules to encode).
+2. **Schedule page**: run `solve()` client-side on the active semester's inputs
+   (normalize → solve → assignRooms → optionally `evaluateConstraints`), persist
+   the result to `schedule_runs` + `schedule_assignments`, and view/export it.
+   - Exports (course view / teacher view / xlsx) are a separate module — still to
+     build (see `src/scheduler/` for model names; `docs/ARCHITECTURE.md`).
+   - Determinism is a HARD invariant; feed inputs canonically (no randomness).
+3. After the solver is wired and demonstrated, deliver the **export module**
+   (course view / teacher view / xlsx). See `outstanding.md` (Q1–Q8) for the
+   remaining evaluator rules: double-period start, ≥250 all-times seats,
+   25%-afternoon, M1/M2/T1/T2 peak density.
 
 ## Gotchas / environment notes
-- Repo secrets are set; local `.env` already exists (gitignored) with the
-  publishable key. Supabase credentials + DB password live only in
-  `supabase-connect-instructions.txt`, `supabase-password.txt`, and
-  `temp/credentials.md` — all gitignored.
+- Supabase creds + DB password live only in `supabase-connect-instructions.txt`,
+  `supabase-password.txt`, and `temp/credentials.md` (all gitignored).
 - `gh` is authed as `parsimo2010`; use `MSYS_NO_PATHCONV=1` for `gh api /...`.
-- pg driver for direct-DB scripts is in
+- pg driver for direct-DB scripts in
   `C:\Users\HARRIS~1.BUT\AppData\Local\Temp\opencode\db\node_modules` (scratch).
-  The pooler is `aws-0-us-east-2.pooler.supabase.com:6543`, user
-  `postgres.<ref>`, ssl required.
-- Commands: `npm test` (13 pass), `npm run build` (passes), `npm run lint`
-  (0 errors, benign react-refresh/exhaustive-deps warnings only).
-
-## Remaining roadmap (not started)
-- Preferences, Locks, Constraints, Schedule pages (placeholders today).
-- Wire the solver into a Schedule page (run + persist + view), and the export
-  module (course view / teacher view / xlsx).
-- Encode remaining guidance rules into the evaluator (double-period start,
-  ≥250 all-times, 25%-afternoon, M1/M2/T1/T2 density) — see `outstanding.md`.
+  Pooler: `aws-0-us-east-2.pooler.supabase.com:6543`, user `postgres.<ref>`,
+  ssl required. **Migrations are applied manually** to the live DB — no CI runner.
+- `Fall 2026 (copy)` is leftover from testing; it's inert (not active). Can be
+  deleted or renamed.
