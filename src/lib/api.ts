@@ -1,6 +1,35 @@
 import { supabase } from '../utils/supabase'
-import type { Semester, Person, Course, Qualification, QualLevel } from './db-types'
+import type {
+  Semester,
+  Person,
+  Course,
+  Qualification,
+  QualLevel,
+  DbPeriod,
+  Preference,
+  Lock,
+  Constraint,
+  ConstraintType,
+  Classroom,
+} from './db-types'
 import type { Role } from './rbac'
+
+export const CONSTRAINT_DEFAULTS: Array<{
+  name: string
+  type: ConstraintType
+  penalty: number
+  params: Record<string, number>
+}> = [
+  { name: 'Spread sections across the week', type: 'spread_sections', penalty: 25, params: {} },
+  { name: 'Morning schedule minimum', type: 'morning_min', penalty: 15, params: { min: 0 } },
+  { name: 'Afternoon schedule minimum', type: 'afternoon_min', penalty: 15, params: { min: 0 } },
+  { name: 'M/T balance', type: 'balance_mt', penalty: 20, params: {} },
+  { name: 'Consecutive periods', type: 'consecutive_periods', penalty: 10, params: {} },
+  { name: 'Teach on a single day', type: 'single_day', penalty: 12, params: {} },
+  { name: 'No forced breaks', type: 'no_forced_break', penalty: 10, params: {} },
+  { name: 'Avoid single-offering peak slots', type: 'single_offering_peak', penalty: 30, params: {} },
+  { name: 'Two sections in same block', type: 'two_section_same_block', penalty: 15, params: {} },
+]
 
 export async function fetchSemesters(): Promise<Semester[]> {
   const { data, error } = await supabase
@@ -188,4 +217,159 @@ export async function setQualification(
       .eq('level', level)
     if (error) throw error
   }
+}
+
+export async function fetchPeriods(semesterId: string): Promise<DbPeriod[]> {
+  const { data, error } = await supabase
+    .from('periods')
+    .select('*')
+    .eq('semester_id', semesterId)
+    .order('day')
+    .order('slot')
+  if (error) throw error
+  return (data as DbPeriod[]) ?? []
+}
+
+export async function fetchPreferences(semesterId: string): Promise<Preference[]> {
+  const { data, error } = await supabase
+    .from('preferences')
+    .select('*')
+    .eq('semester_id', semesterId)
+  if (error) throw error
+  return (data as Preference[]) ?? []
+}
+
+export async function addPreference(input: {
+  personId: string
+  semesterId: string
+  kind: 'course' | 'period'
+  courseId?: string | null
+  periodId?: string | null
+  rank: number
+  isHardExclusion?: boolean
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('preferences')
+    .insert({
+      person_id: input.personId,
+      semester_id: input.semesterId,
+      kind: input.kind,
+      course_id: input.courseId ?? null,
+      period_id: input.periodId ?? null,
+      rank: input.rank,
+      is_hard_exclusion: input.isHardExclusion ?? false,
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function deletePreference(id: string): Promise<void> {
+  const { error } = await supabase.from('preferences').delete().eq('id', id)
+  if (error) throw error
+}
+
+export async function fetchLocks(semesterId: string): Promise<Lock[]> {
+  const { data, error } = await supabase
+    .from('locks')
+    .select('*')
+    .eq('semester_id', semesterId)
+  if (error) throw error
+  return (data as Lock[]) ?? []
+}
+
+export async function addLock(input: {
+  semesterId: string
+  personId?: string | null
+  courseId: string
+  section?: number | null
+  periodId?: string | null
+  roomId?: string | null
+  lockType: 'course_director' | 'assignment'
+  note?: string
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('locks')
+    .insert({
+      semester_id: input.semesterId,
+      person_id: input.personId ?? null,
+      course_id: input.courseId,
+      section: input.section ?? null,
+      period_id: input.periodId ?? null,
+      room_id: input.roomId ?? null,
+      lock_type: input.lockType,
+      note: input.note ?? null,
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function deleteLock(id: string): Promise<void> {
+  const { error } = await supabase.from('locks').delete().eq('id', id)
+  if (error) throw error
+}
+
+export async function fetchConstraints(semesterId: string): Promise<Constraint[]> {
+  const { data, error } = await supabase
+    .from('constraints')
+    .select('*')
+    .eq('semester_id', semesterId)
+    .order('name')
+  if (error) throw error
+  return (data as Constraint[]) ?? []
+}
+
+/** Insert one constraint row (AD). Returns the new record id. */
+export async function addConstraint(input: {
+  semesterId: string
+  name: string
+  type: ConstraintType
+  penalty: number
+  params?: Record<string, number>
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('constraints')
+    .insert({
+      semester_id: input.semesterId,
+      name: input.name,
+      type: input.type,
+      penalty: input.penalty,
+      params: input.params ?? {},
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function updateConstraint(
+  id: string,
+  patch: { name?: string; penalty?: number; params?: Record<string, number> },
+): Promise<string> {
+  const { data, error } = await supabase
+    .from('constraints')
+    .update(patch)
+    .eq('id', id)
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function deleteConstraint(id: string): Promise<void> {
+  const { error } = await supabase.from('constraints').delete().eq('id', id)
+  if (error) throw error
+}
+
+export async function fetchClassrooms(semesterId: string): Promise<Classroom[]> {
+  const { data, error } = await supabase
+    .from('classrooms')
+    .select('*')
+    .eq('semester_id', semesterId)
+    .order('name')
+  if (error) throw error
+  return (data as Classroom[]) ?? []
 }
