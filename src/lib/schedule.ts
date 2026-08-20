@@ -91,19 +91,30 @@ export function buildSolveInput(a: SolverSelections): SolveInput {
 /**
  * Convert solver Assignment rows into persistable schedule_assignments, mapping
  * each assignment's period code back to the semester's period uuid.
+ *
+ * Rows whose period code does not resolve to a semester period (a course-director
+ * annotation that carries no teaching period, `period === ''`) cannot be stored
+ * because schedule_assignments.period_id is NOT NULL — those are skipped (they
+ * remain visible in the in-page result but are not a scheduled class).
  */
 export function assignmentsToRows(
   assignments: Assignment[],
   runId: string,
   periodByCode: Map<string, string>,
 ): ScheduleAssignment[] {
-  return assignments.map((a) => ({
-    run_id: runId,
-    person_id: a.personId,
-    course_id: a.courseId,
-    section: a.section,
-    period_id: periodByCode.get(a.period) ?? '',
-    room_id: a.roomId ?? null,
-    role: a.role,
-  }))
+  const rows: ScheduleAssignment[] = []
+  for (const a of assignments) {
+    const periodId = a.period ? periodByCode.get(a.period) : undefined
+    if (!periodId) continue
+    rows.push({
+      run_id: runId,
+      person_id: a.personId,
+      course_id: a.courseId,
+      section: a.section,
+      period_id: periodId,
+      room_id: a.roomId ?? null,
+      role: a.role,
+    })
+  }
+  return rows
 }

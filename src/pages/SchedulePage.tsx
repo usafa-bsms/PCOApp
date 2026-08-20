@@ -61,6 +61,13 @@ export function SchedulePage() {
   function sortedViolations(): Violation[] {
     return result ? [...result.violations] : []
   }
+
+  function humanize(detail: string): string {
+    return detail.replace(
+      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
+      (m) => personName.get(m) ?? courseName.get(m) ?? m,
+    )
+  }
   function sortedAssignments() {
     if (!result) return []
     return [...result.assignments].sort(
@@ -88,11 +95,17 @@ export function SchedulePage() {
       const solved = solve(input)
       setResult(solved)
 
-      // persist (AD/lead guarded by RLS)
-      const myPerson = (persons ?? []).find((p) => p.auth_user_id === user.id)
+      // persist (AD/lead guarded by RLS); fall back to any AD/lead persona for
+      // attribution if the current user lacks a linked persona this run
+      const roster = persons ?? []
+      const myPerson = roster.find((p) => p.auth_user_id === user.id)
+      const createdBy = myPerson?.id
+        ?? roster.find((p) => (p.role === 'academic_director' || p.role === 'lead_admin'))?.id
+        ?? roster[0]?.id
+      if (!createdBy) throw new Error('No roster persona available to attribute this schedule run.')
       const runId = await createScheduleRun({
         semesterId: active.id,
-        createdBy: myPerson?.id ?? '',
+        createdBy,
         score: solved.score,
       })
       const rows = assignmentsToRows(solved.assignments, runId, periodByCode)
@@ -130,7 +143,7 @@ export function SchedulePage() {
                 <thead><tr><th>Type</th><th>Penalty</th><th>Detail</th></tr></thead>
                 <tbody>
                   {sortedViolations().map((v, i) => (
-                    <tr key={i}><td>{v.constraintType}</td><td>{v.penalty}</td><td>{v.detail}</td></tr>
+                    <tr key={i}><td>{v.constraintType}</td><td>{v.penalty}</td><td>{humanize(v.detail)}</td></tr>
                   ))}
                 </tbody>
               </table>

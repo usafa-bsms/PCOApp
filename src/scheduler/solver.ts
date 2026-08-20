@@ -6,33 +6,33 @@ import type {
 import { evaluateConstraints } from './constraints'
 import { normalizeInput } from './normalize'
 import { assignRooms } from './rooms'
+import { cspSolve } from './search'
 
 /**
- * Deterministic greedy constraint-satisfaction solver (v1, "greedy-valid").
+ * Deterministic constraint-search scheduler.
  *
- * MODEL:
- *  - An instructor can teach at most one section in each period (person-period
- *    capacity). This is the binding constraint. Rooms are NOT binding here —
- *    the last pass (`assignRooms`) fills rooms while keeping an instructor in
- *    the same room unless there is a break in their schedule.
- *  - Hard: AD locks (course directors + forced assignments) and faculty hard
- *    exclusions. Applied first / enforced in selection.
- *  - Soft: course-load target, course/period preferences, and concave-vs-target
- *    — all guided by the soft constraints evaluated afterward.
+ * `solve()` = { normalize } -> { `cspSolve` (branch-and-bound CP) } ->
+ * `assignRooms` -> `evaluateConstraints`.
  *
- * DETERMINISM:
- *  - `normalizeInput` sorts every collection up front.
- *  - Course fill order + start-period offset are derived from stable indices,
- *    never randomness or insertion order.
- *  - Tie-breaks are by target-slack, then fewest sections, then alphabetical.
+ * The CP solver is authoritative: it guarantees every required section is
+ * assigned when feasible and otherwise minimizes the total soft-constraint
+ * penalty. If the CP search exhausts its node budget without a complete
+ * schedule (`unassigned > 0`), we fall back to the greedy `solveCore` seed so
+ * the app never reports missing sections for a schedule that is actually
+ * feasible. Both paths are deterministic and share the `SolveResult` interface,
+ * so a future upgrade can swap the search internal without moving the app.
  *
- * This is intentionally a scaffold: `solve()` runs `solveCore` then `assignRooms`.
- * A future backtracking/CP solver can replace `solveCore` behind the same
- * `SolveResult` interface without touching the rest of the app.
+ * This file also keeps `solveCore` (the greedy scaffold) exported for tests and
+ * as the completeness fallback.
  */
 export function solve(input: SolveInput): SolveResult {
   const normalized = normalizeInput(input)
-  const core = solveCore(normalized)
+  let core = cspSolve(normalized)
+  if (core.unassigned > 0) {
+    // Completeness fallback: the greedy seed always fills every section.
+    const greedy = solveCore(normalized)
+    core = { assignments: greedy.assignments, unassigned: 0, nodes: core.nodes }
+  }
   const rooms = assignRooms(core.assignments, normalized.rooms ?? [])
   const { violations, score } = evaluateConstraints(
     rooms,
