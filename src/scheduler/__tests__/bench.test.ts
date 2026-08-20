@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { solve } from '../index'
 import { solveCore } from '../solver'
 import { evaluateConstraints } from '../constraints'
-import { CONSTRAINT_DEFAULTS } from '../../lib/api'
+import { CONSTRAINT_DEFAULTS } from '../../lib/constraintDefaults'
 import type { SolveInput, Constraint } from '../types'
 import fixture from './fixtures/fall2026.json'
 
