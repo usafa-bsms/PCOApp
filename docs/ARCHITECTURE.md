@@ -12,7 +12,7 @@ Produce a Preferred Course Offering (PCO) for a BSMS semester: assign each plann
 - **Auth** = Supabase email/password. RLS is the enforcement layer.
 - **Hosting** = GitHub Pages (static build). Env baked at build time via Actions secrets.
 - **Semester**: one active at a time; historical runs viewable/exportable.
-- Sample inputs arrive as **CSV**; loaded into a "Test" semester.
+- Sample inputs arrive as an **xlsx solved PCO**; parsed into a hermetic fixture (`src/scheduler/__tests__/fixtures/fall2026.json`) and used as a deterministic test case. No live "Test" semester is needed.
 
 ## Inputs → solver → outputs
 ```
@@ -37,11 +37,12 @@ schedule_runs + schedule_assignments  →  written to Supabase, read by faculty
 2. Iterate periods, persons, courses in canonical sorted order — never rely on DB/insertion order.
 3. Pure functions only in `src/scheduler/`: take typed input, return a result and a score. No I/O, no network.
 4. Tie-breaks are by target-slack → fewest sections → preference → alphabetical. Start-period offset per course derives from a stable index.
-5. `solve()` = `solveCore` (greedy; person-period + room-count capacity) → `assignRooms` (deferred room fill). A search-based solver can replace `solveCore` behind the same `SolveResult` interface later.
+5. `solve()` = `normalizeInput` → `cspSolve` (branch-and-bound CP, MRV+LCV, in `search.ts`) → `assignRooms` (deferred room fill) → `evaluateConstraints`. If the CP search exhausts its node budget with `unassigned > 0`, the greedy `solveCore` seed is used as a completeness fallback so a feasible schedule is never reported as missing sections. Both paths share the `SolveResult` interface.
 
 ## Directive from scheduling guidance (Inputs/*.pdf)
-Soft targets that should reduce to penalty-weighted constraints (several not yet
-wired in — see outstanding.md Q6/Q7):
+Soft targets that reduce to penalty-weighted constraints (the weight values map
+to the AD-editable `constraints` table; the CP solver optimizes the penalty sum
+against them). Some rules still need dedicated handling — see outstanding.md Q6/Q7:
 - All 12 times used; don't concentrate in a few periods.
 - 10+ sections ⇒ ≥6 times, M/T-split with more mornings, include M1+T1; M1/M2/T1/T2 ≥ others; ≥25% of sections in 5th/6th.
 - Spread a course's sections M/T and through the day unless one instructor.
@@ -66,7 +67,8 @@ src/
     types.ts             # input/output/solution types
     normalize.ts         # canonical ordering of inputs
     constraints.ts       # penalty evaluations
-    solver.ts            # solveCore (greedy) + solve (core + rooms)
+    solver.ts            # solve(): normalize -> cspSolve (search) -> rooms -> constraints
+    search.ts            # cspSolve: branch-and-bound CP (MRV+LCV); greedy solveCore fallback
     rooms.ts             # deferred room-filling pass
     score.ts
     index.ts             # run(input) => { solution, score, violates }
@@ -116,7 +118,7 @@ The PCO report must be downloadable in several formats (offline save + historica
 ## Roadmap
 1. Scaffold + auth — DONE.
 2. Greedy-valid deterministic solver + real Fall 2026 fixture — DONE (16 courses/116 sections placed, rooms filled, no double-booking).
-3. Seed input tables + CRUD pages for inputs (roster, courses, quals, preferences, locks, constraints).
-4. Search-based solver to optimize soft guidance targets (penalty minimization), replacing `solveCore`.
-5. Run/visualize schedule; persist results; faculty view; multi-format export module.
-6. Encode remaining guidance rules (double-period, ≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density).
+3. Seed input tables + CRUD pages for inputs (roster, courses, quals, preferences, locks, constraints, **rooms**) — DONE.
+4. Search-based solver to optimize soft guidance targets (penalty minimization) — DONE (`cspSolve` branch-and-bound CP wires into `solve()`; regression-guarded by `bench.test.ts`, CP beats greedy: ~4542→~252 score, ~98→~21 violations on the fixture).
+5. Run/visualize schedule; persist results; faculty view — DONE (Schedule page: run + save, view past runs, delete; human-readable violations). Remaining: multi-format **export module** (course/teacher/xlsx views).
+6. Encode remaining guidance rules (double-period, ≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density) — pending (outstanding.md Q6).
