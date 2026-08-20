@@ -409,3 +409,18 @@ export async function fetchScheduleRuns(semesterId: string): Promise<ScheduleRun
   if (error) throw error
   return (data as ScheduleRun[]) ?? []
 }
+
+export async function fetchScheduleAssignments(runId: string): Promise<ScheduleAssignment[]> {
+  const { data, error } = await supabase
+    .from('schedule_assignments')
+    .select('*')
+    .eq('run_id', runId)
+    .order('section')
+  if (error) throw error
+  return (data as ScheduleAssignment[]) ?? []
+}
+
+export async function deleteScheduleRun(runId: string): Promise<void> {
+  const { error } = await supabase.from('schedule_runs').delete().eq('id', runId)
+  if (error) throw error
+}
