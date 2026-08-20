@@ -11,6 +11,9 @@ import type {
   Constraint,
   ConstraintType,
   Classroom,
+  RunStatus,
+  ScheduleRun,
+  ScheduleAssignment,
 } from './db-types'
 import type { Role } from './rbac'
 
@@ -372,4 +375,51 @@ export async function fetchClassrooms(semesterId: string): Promise<Classroom[]> 
     .order('name')
   if (error) throw error
   return (data as Classroom[]) ?? []
+}
+
+/** Create a persisted schedule run. Returns the new run id. */
+export async function createScheduleRun(input: {
+  semesterId: string
+  createdBy: string
+  status?: RunStatus
+  score?: number | null
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('schedule_runs')
+    .insert({
+      semester_id: input.semesterId,
+      created_by: input.createdBy,
+      status: input.status ?? 'done',
+      score: input.score ?? null,
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+/** Persist a solved run's assignments in bulk. */
+export async function insertScheduleAssignments(rows: ScheduleAssignment[]): Promise<void> {
+  if (rows.length === 0) return
+  const payload = rows.map((r) => ({
+    run_id: r.run_id,
+    person_id: r.person_id,
+    course_id: r.course_id,
+    section: r.section,
+    period_id: r.period_id,
+    room_id: r.room_id,
+    role: r.role,
+  }))
+  const { error } = await supabase.from('schedule_assignments').insert(payload)
+  if (error) throw error
+}
+
+export async function fetchScheduleRuns(semesterId: string): Promise<ScheduleRun[]> {
+  const { data, error } = await supabase
+    .from('schedule_runs')
+    .select('*')
+    .eq('semester_id', semesterId)
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return (data as ScheduleRun[]) ?? []
 }

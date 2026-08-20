@@ -99,3 +99,26 @@ export interface Constraint {
   penalty: number
   params: Record<string, number>
 }
+
+export type RunStatus = 'running' | 'done' | 'failed'
+
+export interface ScheduleRun {
+  id: string
+  semester_id: string
+  created_by: string
+  created_at: string
+  status: RunStatus
+  score: number | null
+  solution_hash: string | null
+}
+
+export interface ScheduleAssignment {
+  id?: string
+  run_id: string
+  person_id: string
+  course_id: string
+  section: number
+  period_id: string
+  room_id: string | null
+  role: 'director' | 'teacher'
+}
