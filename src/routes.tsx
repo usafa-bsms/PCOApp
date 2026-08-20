@@ -11,6 +11,7 @@ import {
   PreferencesPage,
   LocksPage,
   ConstraintsPage,
+  ClassroomsPage,
   SchedulePage,
 } from './pages/pages'
 
@@ -42,6 +43,7 @@ export function AppRouter() {
           <Route path="/preferences" element={<PreferencesPage />} />
           <Route path="/locks" element={<LocksPage />} />
           <Route path="/constraints" element={<ConstraintsPage />} />
+          <Route path="/rooms" element={<ClassroomsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

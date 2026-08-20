@@ -1,4 +1,5 @@
 export { PreferencesPage } from './PreferencesPage'
 export { LocksPage } from './LocksPage'
 export { ConstraintsPage } from './ConstraintsPage'
+export { ClassroomsPage } from './ClassroomsPage'
 export { SchedulePage } from './SchedulePage'

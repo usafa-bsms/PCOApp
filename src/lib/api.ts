@@ -363,6 +363,45 @@ export async function fetchClassrooms(semesterId: string): Promise<Classroom[]> 
   return (data as Classroom[]) ?? []
 }
 
+export async function createClassroom(input: {
+  semesterId: string
+  name: string
+  capacity: number
+  assignable: boolean
+}): Promise<string> {
+  const { data, error } = await supabase
+    .from('classrooms')
+    .insert({
+      semester_id: input.semesterId,
+      name: input.name,
+      capacity: input.capacity,
+      assignable: input.assignable,
+    })
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function updateClassroom(
+  id: string,
+  patch: { name?: string; capacity?: number; assignable?: boolean },
+): Promise<string> {
+  const { data, error } = await supabase
+    .from('classrooms')
+    .update(patch)
+    .eq('id', id)
+    .select('id')
+    .single()
+  if (error) throw error
+  return data.id
+}
+
+export async function deleteClassroom(id: string): Promise<void> {
+  const { error } = await supabase.from('classrooms').delete().eq('id', id)
+  if (error) throw error
+}
+
 /** Create a persisted schedule run. Returns the new run id. */
 export async function createScheduleRun(input: {
   semesterId: string
