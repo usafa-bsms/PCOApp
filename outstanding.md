@@ -23,7 +23,9 @@ Key rules captured (see ARCHITECTURE "Guidance"):
 - Two-section course: avoid back-to-back within a double block (M1+M2 bad; M2+M3 OK).
 - Cancellation: cancel if enrollment ≤10; <6 auto-cancel (499 exempt).
 New constraint types added: `single_offering_peak`, `two_section_same_block`.
-Remaining guidance rules (double-period start, ≥250 spread, 25%-afternoon, M1/M2/T1/T2-density, distribution) are noted but NOT yet wired into the evaluator — deferred with the solver upgrade (see Open items).
+Double-period (start at 1st/3rd/5th, room held across both) is now encoded in the
+solver (see Q6 follow-up). Remaining guidance rules (≥250 spread, 25%-afternoon,
+M1/M2/T1/T2-density, distribution) are noted but NOT yet wired into the evaluator.
 
 ### Q2. Input drop — PROCESSED (plan changed)
 The CSV idea was replaced by `Inputs/DFMS_PCO_F26_V7.xlsx` — a **solved Fall 2026 PCO**
@@ -51,9 +53,12 @@ loaded on first export click). Letters (`M1A`, `T3B`…) distinguish concurrent
 sections per period; double-period flag drives the `Select Pattern` and NONE
 rooms render as `NONE`.
 
-### Q4. Consecutive-period semantics — CONFIRMED
-Yes: **T4–T5 is also a lunch break** (same as M4–M5). `src/lib/periods.ts`
-already treats neither as consecutive.
+### Q4. Consecutive-period semantics — CONFIRMED (and code fixed)
+Yes: **T4–T5 is also a lunch break** (same as M4–M5). NOTE: `src/lib/periods.ts`
+was originally encoding the break between M3/M4 (treating M4/M5 as consecutive) —
+a bug vs. the confirmed rule and the reference start times (T4=1030, T5=1330, 3h
+apart). Corrected so M4/M5 and T4/T5 are NOT consecutive; the valid double-period
+blocks are (1,2), (3,4), (5,6).
 
 ### Q5. Section numbering / sizing — ANSWERED
 - Section list is a **fixed count** (decided from enrollment vs §-cap ≤23; shrink caps manually).
@@ -66,13 +71,17 @@ already treats neither as consecutive.
 ---
 
 ## Open items (next)
-### Q6. Double-period and Independent Study modeling — ROOMS UI DONE, double-period PENDING
+### Q6. Double-period and Independent Study modeling — ROOMS UI DONE, double-period DONE
 The xlsx has one double-period course (Data Sci 421, occupies 2 periods) and
-courses with Room `NONE` (Math 420, OpsRsch 305 = independent-study style). The
-solver currently treats every section as single-period. Should double-period and
-NONE-room courses get dedicated handling?
-ANSWER: We need to be able to designate a course as a double period courses, but in general we will lock in the periods and that will not need to be scheduled. If it gets a room that isn't NONE then it needs to hold that room across both periods. For NONE rooms, that should be a room that ADs can lock in (for a course that doesn't meet in a classroom), but shouldn't be assigned by the algorithm. We will manually designate every course that doesn't need a room.
-Progress: the **Rooms tab** (CRUD: name/capacity/assignable) ships this session, so ADs can now mark a room non-assignable (a "NONE"-style placeholder) that the solver never places. The **double-period** course modeling (start-only-at-1st/3rd/5th, hold a real room across both periods) is still not implemented — a future item.
+courses with Room `NONE` (Math 420, OpsRsch 305 = independent-study style).
+ANSWER: designate a course as double-period (in general the periods get locked and
+won't need scheduling). If it gets a room that isn't NONE it must hold that room
+across both periods. NONE rooms are a manual AD lock (for courses that don't meet
+in a classroom) and the algorithm never assigns them.
+Progress: the **Rooms tab** (CRUD: name/capacity/assignable) ships, so ADs mark a
+non-assignable "NONE"-style placeholder the solver never places. The
+**double-period** course modeling (start-only-at-1st/3rd/5th, hold a real room
+across both periods) is **DONE** — see the Q6 follow-up below.
 
 ### Q7. Search-based solver upgrade — DONE
 The greedy scaffold reliably places all 116 sections deterministically, but did

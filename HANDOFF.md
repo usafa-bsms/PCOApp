@@ -1,27 +1,25 @@
-# HANDOFF — August 21 afternoon session
+# HANDOFF — ready for next session (as of Aug 21, 2026)
 
 Status and next steps for whoever resumes this. Repo: `usafa-bsms/PCOApp`, local
-`C:\Users\Harris.Butler\PCOApp` (Windows, git-bash/MSYS). The export module is
-shipped and the **double-period solver modeling is now done**. Remaining work is
-the last guidance constraints (and optional per-violation persistence).
+`C:\Users\Harris.Butler\PCOApp` (Windows, git-bash/MSYS). Everything is committed
+and pushed to `main` (GitHub Pages auto-deploys on push). The export module,
+double-period modeling, and the course-load fix are all shipped and tested.
 
-## NEW in this session
-- **Course-load target fixed (off-by-one)**: the CP solver previously IGNORED
-  `courseLoad` (it only sorted candidates in the greedy fallback), so schedules
-  gave some instructors load+1 sections and others 0. Added a soft `load_target`
-  constraint (penalty 20, seeded default) wired into BOTH the CP incremental cost
-  (`search.ts` personContrib/apply) and `evaluateConstraints` (now takes
-  `persons`). On the fixture every instructor now lands EXACTLY on their load
-  (0 over / 0 under). Regression test in `solver.test.ts`.
-- **Double-period solver modeling (Q6 DONE)**:
-  - `src/lib/periods.ts` lunch-break adjacency CORRECTED: the break is between
-    M4/M5 and T4/T5 (matches reference start times T4=1030/T5=1330), not between
-    M3/M4. Valid double blocks are now exactly (1,2), (3,4), (5,6).
-  - Solver `Course` gained `isDoublePeriod`; `cspSolve` and greedy `solveCore`
-    place a double course as a 2-slot block at 1st/3rd/5th slot, both periods
-    reserved for one person. `assignRooms` holds ONE room across both block
-    periods. Built end-to-end via `buildSolveInput`. Tests:
-    `double-period.test.ts` (5).
+## Shipped this cycle
+1. **Export module (Q3)** — CSV-by-course, CSV-by-teacher, and the special PCO
+   xlsx layout, on any shown run (latest or saved). `src/lib/export.ts` (pure,
+   tested) + lazy `src/lib/export-ui.tsx`; SheetJS code-split to a 286KB chunk
+   loaded on first export click. Tests: `export.test.ts` (7).
+2. **Double-period solver modeling (Q6)** — adjacency corrected (lunch between
+   M4/M5 and T4/T5, was M3/M4); a double course (Courses tab `is_double_period`)
+   is placed as a 2-slot block at the 1st/3rd/5th slot with both periods reserved
+   for one person, and `assignRooms` holds ONE real room across both. Implemented
+   in `cspSolve` + greedy `solveCore`. Tests: `double-period.test.ts` (5).
+3. **Course-load target fix (off-by-one)** — the CP solver previously ignored
+   `courseLoad`, causing load+1 schedules. Added `load_target` (penalty 20, seeded
+   default) wired into the CP incremental cost AND `evaluateConstraints` (now takes
+   `persons`). On the fixture every instructor now lands EXACTLY on their load.
+   Regression test in `solver.test.ts`.
 
 ## NEXT SESSION
 1. **Remaining guidance constraints** (outstanding.md Q6 note): ≥250-spread,
@@ -30,6 +28,8 @@ the last guidance constraints (and optional per-violation persistence).
    the last solver item.
 2. Optional: persist the per-violation list on a run (score + assignments are
    saved, but not the violation breakdown), so past runs explain their score.
+3. Before anything else, **re-run the schedule** in the Schedule tab (existing
+   `Fall 2026` runs predate the load fix and show the old distribution).
 
 ## Earlier state (mostly unchanged, still true)
 - **Live Supabase** (`lqvebfpshohqchympzby.supabase.co`, `us-east-2`): migrated
@@ -49,11 +49,6 @@ the last guidance constraints (and optional per-violation persistence).
 ## Checks passing
 - `npm test` — 30 pass (periods + export + solver + double-period + fixture + bench).
 - `npm run build`, `npm run lint` — pass (0 errors).
-
-## Note for the live DB
-- The existing `Fall 2026` schedule runs were saved BEFORE the `load_target` fix,
-  so they still show the old load+1 distribution. After this deploys, **re-run the
-  schedule** in the Schedule tab to see every instructor land exactly on their load.
 
 ## Gotchas / environment notes
 - Supabase creds + DB password live only in `supabase-connect-instructions.txt`,

@@ -42,7 +42,7 @@ schedule_runs + schedule_assignments  →  written to Supabase, read by faculty
 ## Directive from scheduling guidance (Inputs/*.pdf)
 Soft targets that reduce to penalty-weighted constraints (the weight values map
 to the AD-editable `constraints` table; the CP solver optimizes the penalty sum
-against them). Some rules still need dedicated handling — see outstanding.md Q6/Q7:
+against them). Some rules still need dedicated handling — see outstanding.md Q6 note:
 - All 12 times used; don't concentrate in a few periods.
 - 10+ sections ⇒ ≥6 times, M/T-split with more mornings, include M1+T1; M1/M2/T1/T2 ≥ others; ≥25% of sections in 5th/6th.
 - Spread a course's sections M/T and through the day unless one instructor.
@@ -50,6 +50,9 @@ against them). Some rules still need dedicated handling — see outstanding.md Q
 - Double-period courses start only at 1st/3rd/5th.
 - Avoid single-offering at slots 1/5/6 (encoded: `single_offering_peak`).
 - Two-section course: no back-to-back within one double block (encoded: `two_section_same_block`).
+- Double-period courses start only at 1st/3rd/5th — DONE (block placement + room hold).
+- Course-load target — DONE (`load_target`, fixing the load+1 off-by-one).
+- Not yet encoded: ≥250 enrollment spread, ≥25%-afternoon, M1/M2/T1/T2 density, distribution.
 
 ## Directory layout
 ```
@@ -89,13 +92,13 @@ temp/                     # local scratch (gitignored); parse_pco.py regenerates
 All input/result tables carry `semester_id` (PCO is per-semester).
 - `semesters` — id, name (e.g. "Fall 2026"), start, end. One active at a time.
 - `persons` — id (uuid, links auth), name, email, role (enum), label (text, nullable), course_load (int, target). One row per faculty member.
-- `course_list` — id, semester_id, code (e.g. MATH 411), title, sections (int), expected_enrollment (int).
+- `course_list` — id, semester_id, code (e.g. MATH 411), title, sections (int), expected_enrollment (int), is_double_period (bool).
 - `qualifications` — id, person_id, course_id, level (enum: `can_teach | has_taught | can_direct`). One row per level; multiple levels allowed per person+course. Modeled as instructor × course grid.
 - `periods` — id, semester_id, code (M1..T6), day (enum `M|T`), slot (1..6), part_of_day (enum `morning|afternoon`). M4–M5 / T4–T5 are a LUNCH break (not consecutive).
 - `classrooms` — id, semester_id, name, capacity (int; a room characteristic, currently up to 23). Seating target ≈ 110% of expected enrollment by sizing sections.
 - `preferences` — id, person_id, semester_id, kind (enum `course|period`), course_id (nullable), period_id (nullable), rank (int; lower = stronger), is_hard_exclusion (bool). Faculty "want to teach X / teach during Y"; hard exclusions = hard.
 - `locks` — id, semester_id, course_id, section (nullable), person_id (nullable), period_id (nullable), room_id (nullable), lock_type (enum `course_director | assignment`), note. HARD — any subset of course→section→period→room→instructor.
-- `constraints` — id, semester_id, name, type (enum: `spread_sections | morning_min | afternoon_min | balance_mt | consecutive_periods | single_day | no_forced_break | single_offering_peak | two_section_same_block`), penalty (int), params (jsonb).
+- `constraints` — id, semester_id, name, type (enum: `spread_sections | morning_min | afternoon_min | balance_mt | consecutive_periods | single_day | no_forced_break | single_offering_peak | two_section_same_block | load_target`), penalty (int), params (jsonb).
 - `schedule_runs` — id, semester_id, created_by, created_at, status (enum `running|done|failed`), solution_hash (for reproducibility), score (int).
 - `schedule_assignments` — id, run_id, person_id, course_id, section (int), period_id, room_id (nullable), role (enum `director|teacher`).
 
@@ -109,16 +112,17 @@ All input/result tables carry `semester_id` (PCO is per-semester).
 - Use RLS policies keyed on the current user's `persons.role`. App-role checks in `lib/rbac.ts` are UX only.
 
 ## Output / export
-The PCO report must be downloadable in several formats (offline save + historical view). Primary views:
-1. Sections by **course** (each course → its periods/instructors/rooms).
-2. Sections by **teacher** (each instructor → their periods/courses/rooms).
-3. The special **PCO xlsx** layout (`Inputs/DFMS_PCO_F26_V7.xlsx`).
-(Not yet implemented — see `outstanding.md` Q3.)
+The PCO report is downloadable in several formats (offline save + historical view). Primary views (all implemented in `src/lib/export.ts` + lazy `export-ui.tsx`, wired into the Schedule page for any shown run):
+1. Sections by **course** (each course → its periods/instructors/rooms). CSV.
+2. Sections by **teacher** (each instructor → their periods/courses/rooms). CSV.
+3. The special **PCO xlsx** layout (`Inputs/DFMS_PCO_F26_V7.xlsx`) — Dept/Course/Section-Cap/Class-Section letter/Associated Class/Room/Select Pattern/Start Time/M-or-T/Instructor/Exam Type. (See `outstanding.md` Q3.)
 
 ## Roadmap
 1. Scaffold + auth — DONE.
 2. Greedy-valid deterministic solver + real Fall 2026 fixture — DONE (16 courses/116 sections placed, rooms filled, no double-booking).
 3. Seed input tables + CRUD pages for inputs (roster, courses, quals, preferences, locks, constraints, **rooms**) — DONE.
-4. Search-based solver to optimize soft guidance targets (penalty minimization) — DONE (`cspSolve` branch-and-bound CP wires into `solve()`; regression-guarded by `bench.test.ts`, CP beats greedy: ~4542→~252 score, ~98→~21 violations on the fixture).
-5. Run/visualize schedule; persist results; faculty view — DONE (Schedule page: run + save, view past runs, delete; human-readable violations). Remaining: multi-format **export module** (course/teacher/xlsx views).
-6. Encode remaining guidance rules (double-period, ≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density) — pending (outstanding.md Q6).
+4. Search-based solver to optimize soft guidance targets (penalty minimization) — DONE (`cspSolve` branch-and-bound CP wires into `solve()`; regression-guarded by `bench.test.ts`, CP beats greedy).
+5. Run/visualize schedule; persist results; faculty view — DONE (Schedule page: run + save, view past runs, delete; human-readable violations).
+6. Export module (course/teacher CSV + PCO xlsx) — DONE (Q3).
+7. **Double-period course modeling** (2-slot block at 1st/3rd/5th, room held across both periods) + **course-load target** soft constraint — DONE (Q6, off-by-one fix).
+8. Encode remaining guidance rules (≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density, distribution) — pending (outstanding.md Q6 note). Optional: persist per-violation list on a run.
