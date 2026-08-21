@@ -8,6 +8,21 @@ import { normalizeInput } from './normalize'
 import { assignRooms } from './rooms'
 import { cspSolve } from './search'
 
+/** Second period of a two-slot block that starts at `code`, or null if `code`
+ * is not a valid block start (1st/3rd/5th slot). Mirrors search.ts. */
+function blockPartner(code: string): string | null {
+  const slot = Number(code.charAt(1))
+  if (slot !== 1 && slot !== 3 && slot !== 5) return null
+  return `${code.charAt(0)}${slot + 1}`
+}
+function blockPeriodsOf(code: string): string[] {
+  const partner = blockPartner(code)
+  return partner ? [code, partner] : [code]
+}
+function isValidBlockStart(code: string): boolean {
+  return blockPartner(code) !== null
+}
+
 /**
  * Deterministic constraint-search scheduler.
  *
@@ -36,7 +51,8 @@ export function solve(input: SolveInput): SolveResult {
   const rooms = assignRooms(core.assignments, normalized.rooms ?? [])
   const { violations, score } = evaluateConstraints(
     rooms,
-    normalized.constraints
+    normalized.constraints,
+    normalized.persons
   )
   return { assignments: rooms, score, violations }
 }
@@ -82,13 +98,19 @@ export function solveCore(input: SolveInput): Pick<SolveResult, 'assignments'> {
   const countTeacherSections = (courseId: string): number =>
     allAssignments.filter((a) => a.courseId === courseId && a.role === 'teacher').length
 
-  const addTeacher = (personId: string, courseId: string, section: number, period: string) => {
-    allAssignments.push({ personId, courseId, section, period, role: 'teacher' })
+  const addTeacher = (personId: string, courseId: string, section: number, period: string, double = false) => {
+    const periods = double ? blockPeriodsOf(period) : [period]
+    for (const per of periods) {
+      const set = personPeriods.get(personId) ?? new Set<string>()
+      set.add(per)
+      personPeriods.set(personId, set)
+      periodCount.set(per, (periodCount.get(per) ?? 0) + 1)
+    }
     personLoad.set(personId, (personLoad.get(personId) ?? 0) + 1)
-    const set = personPeriods.get(personId) ?? new Set<string>()
-    set.add(period)
-    personPeriods.set(personId, set)
-    periodCount.set(period, (periodCount.get(period) ?? 0) + 1)
+    allAssignments.push({
+      personId, courseId, section, period, role: 'teacher',
+      doubleBlockStart: double || undefined,
+    })
   }
 
   const nextFreeSection = (courseId: string): number =>
@@ -140,6 +162,7 @@ export function solveCore(input: SolveInput): Pick<SolveResult, 'assignments'> {
         preferCourse,
         section: countTeacherSections(course.id) + 1,
         addTeacher,
+        double: course.isDoublePeriod ?? false,
       })
       if (!placed) break
     }
@@ -162,7 +185,8 @@ interface PlaceCtx {
   hardPeriodExclusion: (personId: string, period: string) => boolean
   preferCourse: (personId: string, courseId: string) => boolean
   section: number
-  addTeacher: (personId: string, courseId: string, section: number, period: string) => void
+  addTeacher: (personId: string, courseId: string, section: number, period: string, double?: boolean) => void
+  double?: boolean
 }
 
 /**
@@ -197,12 +221,18 @@ function placeSection(ctx: PlaceCtx): boolean {
 
   for (let k = 0; k < len; k++) {
     const period = ctx.periodCodes[(ctx.start + k) % len]
-    if (ctx.periodFull(period)) continue
+    if (ctx.double && !isValidBlockStart(period)) continue
+    const block = ctx.double ? blockPeriodsOf(period) : [period]
+    let full = false
+    for (const per of block) if (ctx.periodFull(per)) full = true
+    if (full) continue
     const free = eligible.find(
-      (p) => !ctx.isBusy(p.id, period) && !ctx.hardPeriodExclusion(p.id, period)
+      (p) =>
+        block.every((per) => !ctx.isBusy(p.id, per)) &&
+        block.every((per) => !ctx.hardPeriodExclusion(p.id, per))
     )
     if (free) {
-      ctx.addTeacher(free.id, ctx.course.id, ctx.section, period)
+      ctx.addTeacher(free.id, ctx.course.id, ctx.section, period, ctx.double)
       return true
     }
   }

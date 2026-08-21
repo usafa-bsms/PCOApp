@@ -13,6 +13,7 @@ export type ConstraintType =
   | 'no_forced_break'
   | 'single_offering_peak'
   | 'two_section_same_block'
+  | 'load_target'
 export type RunStatus = 'running' | 'done' | 'failed'
 export type AssignmentRole = 'director' | 'teacher'
 
@@ -32,6 +33,8 @@ export interface Course {
   title?: string
   sections: number
   expectedEnrollment: number
+  /** A double-period course occupies two consecutive periods (a 2-slot block). */
+  isDoublePeriod?: boolean
 }
 
 export interface Qualification {
@@ -95,6 +98,8 @@ export interface Assignment {
   period: string
   roomId?: string
   role: AssignmentRole
+  /** True when this section is the START of a two-period double block. */
+  doubleBlockStart?: boolean
 }
 
 export interface Violation {

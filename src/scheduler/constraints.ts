@@ -1,4 +1,4 @@
-import type { SolveResult, Assignment, Constraint } from './types'
+import type { SolveResult, Assignment, Constraint, Person } from './types'
 import { areConsecutivePeriods } from '../lib/periods'
 
 const teachers = (assignments: Assignment[]): Assignment[] =>
@@ -12,12 +12,14 @@ const slotOf = (period: string): number => Number(period.charAt(1))
  * iteration order is fixed; each constraint type produces a sorted list of
  * Violations so results are reproducible regardless of call sequence.
  *
- * Classification is approximate until the scheduling-guidance PDF is encoded;
- * penalty magnitudes and detection details can be tuned there.
+ * `persons` (optional) lets the load-target constraint compare each person's
+ * assigned sections against their courseLoad. When omitted, load_target is a
+ * no-op (it is still shown in the saved default set).
  */
 export function evaluateConstraints(
   assignments: Assignment[],
-  constraints: Constraint[]
+  constraints: Constraint[],
+  persons?: Person[]
 ): { violations: SolveResult['violations']; score: number } {
   const ts = teachers(assignments)
   const byCourse: Map<string, Assignment[]> = new Map()
@@ -201,6 +203,23 @@ export function evaluateConstraints(
               constraintType: 'two_section_same_block',
               penalty: c.penalty,
               detail: `${courseId}: 2 sections back-to-back in one double block`,
+            })
+          }
+        }
+        break
+      }
+      case 'load_target': {
+        if (!persons || persons.length === 0) break
+        const target = new Map(persons.map((p) => [p.id, p.courseLoad]))
+        for (const person of persons) {
+          const assigned = (byPerson.get(person.id)?.length ?? 0)
+          const goal = target.get(person.id) ?? 0
+          const diff = assigned - goal
+          if (diff !== 0) {
+            violations.push({
+              constraintType: 'load_target',
+              penalty: c.penalty * Math.abs(diff),
+              detail: `${person.id}: ${assigned} assigned vs ${goal} load target (${diff})`,
             })
           }
         }

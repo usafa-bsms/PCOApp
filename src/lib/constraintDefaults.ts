@@ -19,4 +19,5 @@ export const CONSTRAINT_DEFAULTS: Array<{
   { name: 'No forced breaks', type: 'no_forced_break', penalty: 10, params: {} },
   { name: 'Avoid single-offering peak slots', type: 'single_offering_peak', penalty: 30, params: {} },
   { name: 'Two sections in same block', type: 'two_section_same_block', penalty: 15, params: {} },
+  { name: 'Course-load target', type: 'load_target', penalty: 20, params: {} },
 ]

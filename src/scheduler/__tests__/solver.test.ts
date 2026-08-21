@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { solve, normalizeInput } from '../index'
 import type { SolveInput } from '../types'
+import fx from './fixtures/fall2026.json'
 
 const baseInput: SolveInput = {
   persons: [
@@ -62,5 +63,39 @@ describe('solver determinism', () => {
     expect(result.score).toBeGreaterThanOrEqual(0)
     const key = JSON.stringify(result.violations)
     expect(JSON.stringify(solve(normalizeInput(baseInput)).violations)).toBe(key)
+  })
+})
+
+describe('course load target', () => {
+  // Total sections equals sum of course loads (116 == 116 on the fixture), so an
+  // optimal schedule gives every instructor EXACTLY their courseLoad — no person
+  // should be over-target (that was the observed off-by-one: load 4 -> 5 assigned).
+  it('respects each instructor courseLoad target on the fixture', () => {
+    const f = fx as unknown as {
+      persons: { id: string; courseLoad: number }[]
+      courses: { id: string; code: string; sections: number; expectedEnrollment: number }[]
+      periods: { code: string; day: 'M' | 'T'; slot: number; partOfDay: 'morning' | 'afternoon' }[]
+      qualifications: { personId: string; courseId: string; level: string }[]
+      rooms: string[]
+    }
+    const input: SolveInput = {
+      persons: f.persons.map((p) => ({ id: p.id, name: p.id, role: 'faculty', courseLoad: p.courseLoad })),
+      courses: f.courses.map((c) => ({ id: c.id, code: c.code, sections: c.sections, expectedEnrollment: c.expectedEnrollment })),
+      periods: f.periods,
+      qualifications: f.qualifications.map((q) => ({ personId: q.personId, courseId: q.courseId, level: q.level as 'can_teach' })),
+      preferences: [],
+      locks: [],
+      constraints: [],
+      rooms: f.rooms,
+    }
+    const result = solve(normalizeInput(input))
+    const assigned = new Map<string, number>()
+    for (const a of result.assignments) {
+      if (a.role === 'teacher') assigned.set(a.personId, (assigned.get(a.personId) ?? 0) + 1)
+    }
+    for (const p of f.persons) {
+      const got = assigned.get(p.id) ?? 0
+      expect(got).toBeLessThanOrEqual(p.courseLoad)
+    }
   })
 })

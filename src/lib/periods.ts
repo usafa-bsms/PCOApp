@@ -33,10 +33,14 @@ export function isMorning(_day: Day, slot: number): boolean {
  * Consecutive-class graph. Two slots are "consecutive" only if they have no
  * forced gap between them. Note the LUNCH BREAK between M4 and M5 (also T4/T5):
  * M4→M5 is NOT consecutive, so a teacher on M4,M5 has a break (not a double).
+ * The lunch block after slot 4 also means the valid double-period blocks are
+ * (1,2), (3,4) and (5,6) — matching double-period courses starting at the 1st,
+ * 3rd or 5th slot.
  */
 const NEXT_ADJACENT: Record<number, number | undefined> = {
-  1: 2, 2: 3, 3: undefined, // lunch between 3 and 4
-  4: 5, 5: 6, 6: undefined,
+  1: 2, 2: 3, 3: 4, // morning run slots 1-4
+  4: undefined,     // lunch after slot 4
+  5: 6, 6: undefined,
 }
 
 /**

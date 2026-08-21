@@ -51,6 +51,7 @@ export function buildSolveInput(a: SolverSelections): SolveInput {
       title: c.title ?? undefined,
       sections: c.sections,
       expectedEnrollment: c.expected_enrollment,
+      isDoublePeriod: c.is_double_period,
     })),
     qualifications: a.qualifications.map((q) => ({
       personId: q.person_id,

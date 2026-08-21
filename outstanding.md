@@ -84,12 +84,24 @@ per solve. Regression-guarded by `src/scheduler/__tests__/bench.test.ts` (CP
 beats greedy, deterministic, 116 sections). The AD can further tune soft-target
 penalties in the Constraints tab.
 
-### Q6 follow-up: Double-period solver modeling — PENDING (export honors the flag)
-The **export** already reads `is_double_period` to emit the right `Select Pattern`
-and holds one letter; the solver itself still schedules every section as
-single-period. Designating a double-period course and having the CP solver start
-it only at 1st/3rd/5th period and hold a real room across both periods remains
-the next scheduling work item.
+### Q6 follow-up: Double-period solver modeling — DONE
+the **solver** now schedules double-period courses end-to-end:
+- A double-period course (mark it in the Courses tab via `is_double_period`) is
+  placed as a **2-slot block** starting only at the 1st/3rd/5th slot (M1/M3/M5 or
+  T1/T3/T5), occupying both consecutive periods of the block.
+- **Lunch-break adjacency corrected** in `src/lib/periods.ts`: the break is
+  between M4/M5 and T4/T5 (matching the reference start times: T4=1030, T5=1330),
+  NOT between M3/M4 as previously encoded. This makes the valid double-period
+  blocks exactly (1,2), (3,4), (5,6). Existing solver/fixture tests all still pass.
+- The room pass (`assignRooms`) holds **one real room across BOTH periods** of a
+  block, and a block's room is occupied (and thus blocked from other sections)
+  in both its periods.
+- Implemented in both `cspSolve` (search) and the greedy `solveCore` fallback;
+  `buildSolveInput` passes `is_double_period` through. NONE rooms remain a manual
+  AD lock (as designed); the solver only places real rooms.
+- Tests: `src/scheduler/__tests__/double-period.test.ts` (5). Still todo: remaining
+  guidance constraints (≥250-spread, ≥25%-afternoon, M1/M2/T1/T2 density,
+  distribution) are not yet evaluated.
 
 ### Q8. Confirm synthetic quals for real runs — DONE
 The Fall 2026 quals are synthetic placeholders. When real letter-of-X (and
@@ -102,7 +114,10 @@ adjusted per test run without code changes.
 ---
 
 ## Reference decisions
-- Course load = per-person target (default 3; `new_instructor` 4), reduced manually. Not a hard cap.
+- **Course load = per-person target** (default 3; `new_instructor` 4), reduced
+  manually. Not a hard cap. The CP solver now treats it as a soft `load_target`
+  constraint (penalty 20, in the seeded defaults) so no one exceeds their load
+  target — this fixed the off-by-one where everyone got load+1 sections.
 - Locks are HARD; may pin any subset of course→section→period→room→instructor; solver fills the rest.
 - Course director = course-level role; does not consume a period/load by itself (e.g. Math 243/253).
 - Qualification levels: `can_teach | has_taught | can_direct`.

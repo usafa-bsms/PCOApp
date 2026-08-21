@@ -43,6 +43,8 @@ interface Job {
   section: number
   fixedPerson?: string
   fixedPeriod?: string
+  /** This section is a two-period block; place only at 1st/3rd/5th slot. */
+  double?: boolean
   done?: boolean
 }
 
@@ -51,6 +53,7 @@ interface Placement {
   courseId: string
   section: number
   period: string
+  doubleBlockStart?: boolean
 }
 
 export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
@@ -91,6 +94,9 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
   const personBusy = new Map<string, Set<string>>()
   const periodUsed = new Map<string, number>()
   const personDays = new Map<string, Set<string>>()
+  const personCount = new Map<string, number>() // per-person assigned load (sections)
+  const loadTarget = new Map<string, number>()
+  for (const p of persons) loadTarget.set(p.id, p.courseLoad)
   let morningCount = 0
   let afternoonCount = 0
   let mCount = 0
@@ -104,6 +110,22 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
   const getSlots = (m: Map<string, number[]>, key: string): number[] => {
     let a = m.get(key); if (!a) { a = []; m.set(key, a) } return a
   }
+
+  /**
+   * The second period of a two-slot block that starts at `code`, or null if
+   * `code` is not a valid block start (1st/3rd/5th slot). Blocks are
+   * (slot,slot+1) and must be consecutive (never cross the lunch break).
+   */
+  const blockPartner = (code: string): string | null => {
+    const slot = slotOf(code)
+    if (slot !== 1 && slot !== 3 && slot !== 5) return null
+    return `${dayOf(code)}${slot + 1}`
+  }
+  const blockPeriods = (code: string): string[] => {
+    const partner = blockPartner(code)
+    return partner ? [code, partner] : [code]
+  }
+  const isValidBlockStart = (code: string): boolean => blockPartner(code) !== null
   const courseDayMap = (cid: string): Map<string, number[]> => {
     let m = courseSlots.get(cid); if (!m) { m = new Map(); courseSlots.set(cid, m) } return m
   }
@@ -113,6 +135,9 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
 
   const personContrib = (pid: string): number => {
     let cost = 0
+    const target = loadTarget.get(pid) ?? 0
+    const count = personCount.get(pid) ?? 0
+    cost += pen('load_target') * Math.abs(count - target)
     const days = personDays.get(pid)
     if (days && days.size > 1) cost += pen('single_day')
     const sb = personSlots.get(pid)
@@ -160,36 +185,52 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
     return cost
   }
 
-  /** Mutate state by placing (dir=1) or removing (dir=-1) one class. */
-  const apply = (pid: string, cid: string, section: number, period: string, dir: 1 | -1): void => {
+  /** Mutate state by placing (dir=1) or removing (dir=-1) one class.
+   *  A `double` section reserves BOTH periods of its block but emits a single
+   *  placement anchored at the block's start period. */
+  const apply = (
+    pid: string,
+    cid: string,
+    section: number,
+    period: string,
+    dir: 1 | -1,
+    double = false,
+  ): void => {
     const day = dayOf(period)
-    const slot = slotOf(period)
-    const isT = day === 'T'
+    const periods = double ? blockPeriods(period) : [period]
 
     const pBefore = personContrib(pid)
     const cBefore = courseContrib(cid)
     const gBefore = globalContrib()
 
+    for (const per of periods) {
+      const slot = slotOf(per)
+      const isT = day === 'T'
+      if (dir === 1) {
+        getSlots(courseDayMap(cid), day).push(slot)
+        getSlots(personDayMap(pid), day).push(slot)
+      } else {
+        const cs = getSlots(courseDayMap(cid), day); cs.splice(cs.indexOf(slot), 1)
+        const ps = getSlots(personDayMap(pid), day); ps.splice(ps.indexOf(slot), 1)
+      }
+      if (dir === 1) {
+        let b = personBusy.get(pid); if (!b) { b = new Set(); personBusy.set(pid, b) }
+        b.add(per)
+      } else {
+        personBusy.get(pid)?.delete(per); if (personBusy.get(pid)?.size === 0) personBusy.delete(pid)
+      }
+      periodUsed.set(per, (periodUsed.get(per) ?? 0) + dir)
+      if (dir === 1) { let d = personDays.get(pid); if (!d) { d = new Set(); personDays.set(pid, d) } d.add(day) }
+      else { personDays.get(pid)?.delete(day); if (personDays.get(pid)?.size === 0) personDays.delete(pid) }
+      if (isT) tCount += dir; else mCount += dir
+      if (slot <= 3) morningCount += dir; else afternoonCount += dir
+    }
     if (dir === 1) {
-      getSlots(courseDayMap(cid), day).push(slot)
-      getSlots(personDayMap(pid), day).push(slot)
-      let b = personBusy.get(pid); if (!b) { b = new Set(); personBusy.set(pid, b) }
-      b.add(period)
-      periodUsed.set(period, (periodUsed.get(period) ?? 0) + 1)
-      let d = personDays.get(pid); if (!d) { d = new Set(); personDays.set(pid, d) }
-      d.add(day)
-      if (isT) tCount++; else mCount++
-      if (slot <= 3) morningCount++; else afternoonCount++
-      placements.push({ personId: pid, courseId: cid, section, period })
+      placements.push({ personId: pid, courseId: cid, section, period, doubleBlockStart: double })
+      personCount.set(pid, (personCount.get(pid) ?? 0) + 1)
     } else {
-      const cs = getSlots(courseDayMap(cid), day); cs.splice(cs.indexOf(slot), 1)
-      const ps = getSlots(personDayMap(pid), day); ps.splice(ps.indexOf(slot), 1)
-      personBusy.get(pid)?.delete(period); if (personBusy.get(pid)?.size === 0) personBusy.delete(pid)
-      periodUsed.set(period, (periodUsed.get(period) ?? 0) - 1)
-      personDays.get(pid)?.delete(day); if (personDays.get(pid)?.size === 0) personDays.delete(pid)
-      if (isT) tCount--; else mCount--
-      if (slot <= 3) morningCount--; else afternoonCount--
       placements.pop()
+      personCount.set(pid, Math.max(0, (personCount.get(pid) ?? 1) - 1))
     }
 
     const pAfter = personContrib(pid)
@@ -199,10 +240,10 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
   }
 
   /** Precompute marginal cost of placing candidate without committing. */
-  const marginal = (pid: string, cid: string, period: string): number => {
-    apply(pid, cid, 0, period, 1)
+  const marginal = (pid: string, cid: string, period: string, double = false): number => {
+    apply(pid, cid, 0, period, 1, double)
     const s = score
-    apply(pid, cid, 0, period, -1)
+    apply(pid, cid, 0, period, -1, double)
     return s
   }
 
@@ -212,7 +253,9 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
   )
   const jobs: Job[] = []
   for (const c of coursesSorted) {
-    for (let sec = 1; sec <= c.sections; sec++) jobs.push({ courseId: c.id, code: c.code, section: sec })
+    for (let sec = 1; sec <= c.sections; sec++) {
+      jobs.push({ courseId: c.id, code: c.code, section: sec, double: c.isDoublePeriod ?? false })
+    }
   }
   const directions: Assignment[] = []
   const resultAssign: Assignment[] = []
@@ -245,10 +288,16 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
     if (!job || jobTaken.has(job)) continue
     jobTaken.add(job)
     if (lock.personId && lock.period) {
-      if (periodUsed.get(lock.period) !== undefined && (periodUsed.get(lock.period) ?? 0) >= roomCap) continue
-      if (personBusy.get(lock.personId)?.has(lock.period)) continue
-      if (hardPeriodExcluded(lock.personId, lock.period)) continue
-      apply(lock.personId, lock.courseId, job.section, lock.period, 1)
+      if (job.double && !isValidBlockStart(lock.period)) continue
+      const periods = job.double ? blockPeriods(lock.period) : [lock.period]
+      let blocked = false
+      for (const per of periods) {
+        if (periodUsed.get(per) !== undefined && (periodUsed.get(per) ?? 0) >= roomCap) blocked = true
+        if (personBusy.get(lock.personId)?.has(per)) blocked = true
+        if (hardPeriodExcluded(lock.personId, per)) blocked = true
+      }
+      if (blocked) continue
+      apply(lock.personId, lock.courseId, job.section, lock.period, 1, job.double)
       job.done = true
     } else if (lock.personId) {
       job.fixedPerson = lock.personId
@@ -296,16 +345,22 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
       for (const per of periods) {
         const code = per.code
         if (job.fixedPeriod && code !== job.fixedPeriod) continue
-        if (personBusy.get(p.id)?.has(code)) continue
-        if (periodUsed.get(code) !== undefined && (periodUsed.get(code) ?? 0) >= roomCap) continue
-        if (hardPeriodExcluded(p.id, code)) continue
+        if (job.double && !isValidBlockStart(code)) continue
+        const periodsBlock = job.double ? blockPeriods(code) : [code]
+        let blocked = false
+        for (const pb of periodsBlock) {
+          if (personBusy.get(p.id)?.has(pb)) { blocked = true; break }
+          if (periodUsed.get(pb) !== undefined && (periodUsed.get(pb) ?? 0) >= roomCap) { blocked = true; break }
+          if (hardPeriodExcluded(p.id, pb)) { blocked = true; break }
+        }
+        if (blocked) continue
         cands.push({ pid: p.id, period: code })
       }
     }
 
     cands.sort(
       (a, b) =>
-        marginal(a.pid, cid, a.period) - marginal(b.pid, cid, b.period) ||
+        marginal(a.pid, cid, a.period, job.double) - marginal(b.pid, cid, b.period, job.double) ||
         (a.pid < b.pid ? -1 : a.pid > b.pid ? 1 : 0) ||
         (a.period < b.period ? -1 : a.period > b.period ? 1 : 0),
     )
@@ -313,9 +368,9 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
     for (const c of cands) {
       if (nodes > maxNodes) return
       if (score >= bestScore) return
-      apply(c.pid, cid, job.section, c.period, 1)
+      apply(c.pid, cid, job.section, c.period, 1, job.double)
       search(rest)
-      apply(c.pid, cid, job.section, c.period, -1)
+      apply(c.pid, cid, job.section, c.period, -1, job.double)
     }
   }
 
@@ -325,7 +380,10 @@ export function cspSolve(input: SolveInput, opts?: CPOptions): CPSolution {
   resultAssign.push(...directions)
   const source = best ?? placements
   for (const p of source) {
-    resultAssign.push({ personId: p.personId, courseId: p.courseId, section: p.section, period: p.period, role: 'teacher' })
+    resultAssign.push({
+      personId: p.personId, courseId: p.courseId, section: p.section, period: p.period, role: 'teacher',
+      doubleBlockStart: p.doubleBlockStart ?? false,
+    })
   }
 
   const teacherKeys = new Set(resultAssign.filter((a) => a.role === 'teacher').map((a) => `${a.courseId}@${a.section}`))

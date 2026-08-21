@@ -13,6 +13,7 @@ export type ConstraintType =
   | 'no_forced_break'
   | 'single_offering_peak'
   | 'two_section_same_block'
+  | 'load_target'
 
 export interface Semester {
   id: string

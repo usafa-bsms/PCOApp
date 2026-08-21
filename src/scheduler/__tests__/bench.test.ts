@@ -32,7 +32,7 @@ describe('solver quality vs greedy', () => {
 
   it('CP search scores lower than the greedy seed', () => {
     const input = buildDefaultInput()
-    const greedy = evaluateConstraints(solveCore(input).assignments, input.constraints)
+    const greedy = evaluateConstraints(solveCore(input).assignments, input.constraints, input.persons)
     const cp = solve(input)
     expect(cp.violations.length).toBeLessThan(greedy.violations.length)
     expect(cp.score).toBeLessThan(greedy.score)
