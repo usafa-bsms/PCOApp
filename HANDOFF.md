@@ -1,10 +1,38 @@
-# HANDOFF — August 20 evening session
+# HANDOFF — August 21 session
 
 Status and next steps for whoever resumes this. Repo: `usafa-bsms/PCOApp`, local
 `C:\Users\Harris.Butler\PCOApp` (Windows, git-bash/MSYS). The scheduling feature
-is LIVE end-to-end: full CRUD input pages, a deterministic constraint-search
-solver that runs in the browser, and a Schedule page that persists/view/delete
-runs. Remaining work is the export module and encoding the last guidance rules.
+is LIVE end-to-end and the **export module is now shipped** (Q3). Remaining work
+is the double-period solver modeling and the remaining guidance constraints.
+
+## NEW in this session
+- **Export module (Q3 DONE)**: `src/lib/export.ts` (pure, tested) + a lazy
+  `src/lib/export-ui.tsx` (`ExportButtons`). The Schedule page exports any shown
+  run (latest or saved) as:
+  1. **CSV · by course** (`buildCourseView`)
+  2. **CSV · by teacher** (`buildTeacherView`)
+  3. **PCO xlsx** (`buildPcoRows`) — the special layout from
+     `Inputs/DFMS_PCO_F26_V7.xlsx` (Dept / Course / Section Cap / Class-Section
+     letter / Associated Class / Room / Select Pattern / Start Time / M-or-T /
+     Instructor / Exam Type).
+  - `buildPcoRows` assigns distinct period letters (M1A, T3B…) to concurrent
+    sections, reads `is_double_period` for the Select Pattern, and renders rooms
+    missing from the map as `NONE`. Section caps are estimated from a course's
+    expected enrollment (the DB only stores course-level), overridable via `capFor`.
+  - Code-split: xlsx (SheetJS) is a 286KB chunk loaded on first export click, so
+    the main bundle stays ~438KB. Dependency `xlsx@^0.18.5` added.
+  - Tests: `src/lib/__tests__/export.test.ts` (7).
+
+## NEXT SESSION
+1. **Double-period solver modeling** (outstanding.md Q6): the CP solver must start
+   a double-period course only at 1st/3rd/5th slot and hold a real (non-NONE) room
+   across both periods. The **export already honors the flag**; only the solver is
+   still single-period.
+2. **Remaining guidance constraints** (outstanding.md Q6 note): ≥250-spread,
+   ≥25%-afternoon, M1/M2/T1/T2 density, distribution are still unevaluated; only
+   `single_offering_peak` and `two_section_same_block` are wired today.
+3. Optional: persist the per-violation list on a run (score + assignments are
+   saved, but not the violation breakdown), so past runs explain their score.
 
 ## Current state (verified)
 - **Live Supabase** (`lqvebfpshohqchympzby.supabase.co`, `us-east-2`): migrated
@@ -41,28 +69,14 @@ runs. Remaining work is the export module and encoding the last guidance rules.
     placeholder the solver never places — supports outstanding.md Q6.
   - **Schedule**: run solve() client-side, save run+assignments, score/violations
     table (human-readable name `humanize()`), **Saved runs** list with View
-    (persisted across navigation) and Delete (AD/lead).
+    (persisted across navigation), Delete (AD/lead), and **export** of any shown run.
 - **Deployed**: https://usafa-bsms.github.io/PCOApp/ — GitHub Actions deploys on
   push to `main` (secrets `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` set).
 
 ## Checks passing
-- `npm test` — 15 pass (periods + solver + fixture + bench), pure, no network.
+- `npm test` — 22 pass (periods + export + solver + fixture + bench), pure, no network.
 - `npm run build` — passes (tsc -b, then vite).
 - `npm run lint` — 0 errors (benign react-refresh/exhaustive-deps warnings).
-
-## NEXT SESSION
-1. **Export module** (the main remaining deliverable) — course view / teacher view /
-   the special **PCO xlsx** layout from `Inputs/DFMS_PCO_F26_V7.xlsx`. See
-   outstanding.md Q3. Wire it into the Schedule page (export a saved run).
-2. **Double-period modeling** — outstanding.md Q6: designate a course as
-   double-period; if it gets a real (non-NONE) room, hold that room across both
-   periods. Currently every section is single-period.
-3. **Remaining guidance constraints** — outstanding.md Q6 note: ten-listing the
-   other rules (≥250 spread, ≥25%-afternoon, M1/M2/T1/T2 density, distribution) is
-   still pending; only `single_offering_peak` and `two_section_same_block` are
-   evaluated today. Optionally tune penalty weights via the Constraints tab.
-4. Optional: persist per-violation list on a run (score + assignments are saved,
-   but not the violation breakdown), so past runs explain their score.
 
 ## Gotchas / environment notes
 - Supabase creds + DB password live only in `supabase-connect-instructions.txt`,

@@ -37,12 +37,19 @@ was created; it's used as a local, deterministic test case instead.
 - Everyone else ➜ qualified for all courses.
 - Course directors ➜ qualified to direct all courses (CD = most-section lead).
 
-### Q3. Export formats — ANSWERED
-Primary report views:
-1. Sections by **course** (teacher sees their course → periods/instructors/rooms).
-2. Sections by **teacher** (teacher finds their name → periods/courses/rooms).
-3. The special **PCO xlsx** format from `Inputs/DFMS_PCO_F26_V7.xlsx`.
-Not yet implemented; drives a future flexible output module.
+### Q3. Export formats — DONE (ship with fueling)
+Primary report views now export from any shown run (latest or saved) on the
+Schedule page:
+1. **CSV · by course** — sections grouped by course → periods/instructors/rooms.
+2. **CSV · by teacher** — sections grouped by instructor.
+3. **PCO xlsx** — the special layout from `Inputs/DFMS_PCO_F26_V7.xlsx`
+   (Dept/Course/Section Cap/Class-Section letter/Associated Class/Room/Select
+   Pattern/Start Time/M-or-T/Instructor/Exam Type).
+Implemented in `src/lib/export.ts` (pure, tested) + a lazy-loaded
+`src/lib/export-ui.tsx` wrapper that code-splits the SheetJS runtime (286KB chunk,
+loaded on first export click). Letters (`M1A`, `T3B`…) distinguish concurrent
+sections per period; double-period flag drives the `Select Pattern` and NONE
+rooms render as `NONE`.
 
 ### Q4. Consecutive-period semantics — CONFIRMED
 Yes: **T4–T5 is also a lunch break** (same as M4–M5). `src/lib/periods.ts`
@@ -76,6 +83,13 @@ default penalties: score ~4542/98 violations (greedy) → ~252/21 (CP), ~0.9–1
 per solve. Regression-guarded by `src/scheduler/__tests__/bench.test.ts` (CP
 beats greedy, deterministic, 116 sections). The AD can further tune soft-target
 penalties in the Constraints tab.
+
+### Q6 follow-up: Double-period solver modeling — PENDING (export honors the flag)
+The **export** already reads `is_double_period` to emit the right `Select Pattern`
+and holds one letter; the solver itself still schedules every section as
+single-period. Designating a double-period course and having the CP solver start
+it only at 1st/3rd/5th period and hold a real room across both periods remains
+the next scheduling work item.
 
 ### Q8. Confirm synthetic quals for real runs — DONE
 The Fall 2026 quals are synthetic placeholders. When real letter-of-X (and

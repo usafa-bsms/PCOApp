@@ -20,6 +20,8 @@ import type { Course, DbPeriod, Person, ScheduleAssignment, ScheduleRun } from '
 import { assignmentsToRows, buildSolveInput } from '../lib/schedule'
 import { solve, type SolveResult } from '../scheduler'
 import { isAtLeast } from '../lib/rbac'
+import { ExportButtons } from '../lib/export-ui'
+import type { ExportContext, ExportRow } from '../lib/export'
 import { Crud, ErrorBox, useAsyncError } from './Crud'
 
 interface Row {
@@ -160,6 +162,33 @@ export function SchedulePage() {
   const shownTitle = result ? 'Latest run' : view ? 'Saved run' : null
   const shownScore = result ? result.score : view?.run.score ?? null
 
+  // Export needs raw schedule rows. For a saved run that's `view.rows`; for an
+  // in-page result we reconstruct lightweight rows (no run_id yet).
+  const exportAssignments: ExportRow[] =
+    view
+      ? view.rows
+      : (result?.assignments ?? []).map((a) => ({
+          course_id: a.courseId,
+          person_id: a.personId,
+          period_id: periodByCode.get(a.period) ?? a.period,
+          room_id: a.roomId ?? null,
+          section: a.section,
+          role: a.role,
+        }))
+
+  const exportCtx: ExportContext = {
+    courseCode: courseName,
+    courseEnrollment: new Map(courses.map((c) => [c.id, c.expected_enrollment])),
+    personName: personName,
+    periodCode: periodName,
+    roomName,
+    department: 'DFMS',
+  }
+  const isDouble = new Map(courses.map((c) => [c.id, c.is_double_period]))
+  const baseFilename = shownTitle
+    ? `${shownTitle.replace(/ /g, '-')}-${active?.name?.replace(/ /g, '') ?? 'schedule'}`
+    : `PCO-${active?.name?.replace(/ /g, '') ?? 'schedule'}`
+
   return (
     <Crud
       title="Schedule"
@@ -177,6 +206,22 @@ export function SchedulePage() {
           <h3>{shownTitle}
             {shownScore !== null && <span className="muted"> — score {shownScore}, {shownRows.length} sections</span>}
           </h3>
+          <p>
+            <span className="muted">Export this run:</span>{' '}
+            {exportAssignments.length > 0 && (
+              <ExportButtons
+                exportAssignments={exportAssignments}
+                courseCode={exportCtx.courseCode}
+                courseEnrollment={exportCtx.courseEnrollment}
+                personName={exportCtx.personName}
+                periodCode={exportCtx.periodCode}
+                roomName={exportCtx.roomName}
+                isDouble={isDouble}
+                department={exportCtx.department}
+                baseFilename={baseFilename}
+              />
+            )}
+          </p>
           {result && result.violations.length > 0 && (
             <table className="table">
               <thead><tr><th>Type</th><th>Penalty</th><th>Detail</th></tr></thead>
